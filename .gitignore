@@ -37,3 +37,8 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# keep the template tracked
+!.env.example
+
+/lib/generated/prisma
