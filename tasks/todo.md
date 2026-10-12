@@ -8,7 +8,7 @@
 - [x] Doc de la version installée de Prisma lue (config, adaptateur Neon, sortie du client) avant de coder
 - [x] `prisma`, `@prisma/client`, `zod`, `vitest` installés ; versions notées dans `package.json`
 - [x] Scripts ajoutés : `test`, `db:migrate`, `db:seed`, `db:studio`
-- [x] `.env.example` liste `DATABASE_URL`, `DIRECT_URL`, `TEST_DATABASE_URL` sans valeur, et est suivi par git (`.env` reste ignoré)
+- [x] `.env.example` liste `DATABASE_URL`, `DIRECT_URL`, `.env.test` sans valeur, et est suivi par git (`.env` reste ignoré)
 
 **Verification :**
 - [x] `pnpm typecheck` et `pnpm lint` passent
@@ -24,19 +24,19 @@
 **Description :** Traduire le modèle de données du CDC en schéma Prisma et l'appliquer sur Neon.
 
 **Acceptance criteria :**
-- [ ] 6 modèles : `Family`, `Member`, `Activity`, `FamilyEvent`, `Rsvp`, `PushSubscription`
-- [ ] Enums : `Role` (parent, child), `Repeat` (none, daily, weekly), `EventStatus` (proposed, confirmed), `RsvpStatus` (yes, no, maybe, pending)
-- [ ] `Member.phone` facultatif ; `Member.tokenHash` unique ; `Rsvp` unique sur `(eventId, memberId)`
-- [ ] Pas de `pastReminderSentAt` (retiré du CDC)
-- [ ] Suppressions : cascade pour `Activity`, `Rsvp`, `PushSubscription` ; `SetNull` pour `createdById` et `validatedById`
-- [ ] Index : `Member(familyId)`, `Activity(memberId, startsAt)`, `FamilyEvent(familyId, startsAt)`
-- [ ] Migration générée et appliquée avec `DIRECT_URL`
+- [x] 6 modèles : `Family`, `Member`, `Activity`, `FamilyEvent`, `Rsvp`, `PushSubscription`
+- [x] Enums : `Role` (parent, child), `Repeat` (none, daily, weekly), `EventStatus` (proposed, confirmed), `RsvpStatus` (yes, no, maybe, pending)
+- [x] `Member.phone` facultatif ; `Member.tokenHash` unique ; `Rsvp` unique sur `(eventId, memberId)`
+- [x] Pas de `pastReminderSentAt` (retiré du CDC)
+- [x] Suppressions : cascade pour `Activity`, `Rsvp`, `PushSubscription` ; `SetNull` pour `createdById` et `validatedById`
+- [x] Index : `Member(familyId)`, `Activity(memberId, startsAt)`, `FamilyEvent(familyId, startsAt)`
+- [x] Migration générée et appliquée avec `DIRECT_URL`
 
 **Verification :**
-- [ ] `pnpm prisma validate` passe
-- [ ] Migration appliquée sur la base de dev et sur la branche de test
-- [ ] `pnpm typecheck` passe avec les types générés
-- [ ] Relecture du fichier SQL de migration : aucune suppression inattendue
+- [x] `pnpm prisma validate` passe
+- [x] Migration appliquée sur la base de dev et sur la branche de test
+- [x] `pnpm typecheck` passe avec les types générés
+- [x] Relecture du fichier SQL de migration : aucune suppression inattendue
 
 **Dependencies :** Task 1, projet Neon prêt
 **Files likely touched :** `prisma/schema.prisma`, `prisma/migrations/*`
@@ -54,7 +54,7 @@
 - [ ] Test : supprimer un membre supprime ses activités et ses réponses, mais garde un événement confirmé qu'il avait créé
 
 **Verification :**
-- [ ] `pnpm test` passe sur `TEST_DATABASE_URL`
+- [ ] `pnpm test` passe sur `.env.test`
 - [ ] `pnpm typecheck` passe
 
 **Dependencies :** Task 2

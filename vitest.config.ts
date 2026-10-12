@@ -1,5 +1,11 @@
+import { existsSync, readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
+import { parse } from "dotenv"
 import { defineConfig } from "vitest/config"
+
+// Tests run on the Neon test branch: DATABASE_URL and DIRECT_URL come from .env.test.
+const envFile = ".env.test"
+const env = existsSync(envFile) ? parse(readFileSync(envFile)) : {}
 
 export default defineConfig({
   resolve: {
@@ -9,7 +15,8 @@ export default defineConfig({
     environment: "node",
     include: ["lib/**/*.test.ts"],
     passWithNoTests: true,
-    // Database tests share one Neon test branch: run files one at a time.
+    env,
+    // Database tests share one branch: run files one at a time.
     fileParallelism: false,
   },
 })

@@ -1,7 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// Lini data model. See CDC-agenda-famille.md ("Modèle de données").
+// All dates are stored in UTC. For allDay rows, startsAt/endsAt are midnight UTC of the
+// day and must always be displayed in UTC, never converted to the device timezone.
 
 generator client {
   provider = "prisma-client"
@@ -10,4 +9,121 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  parent
+  child
+}
+
+enum Repeat {
+  none
+  daily
+  weekly
+}
+
+enum EventStatus {
+  proposed
+  confirmed
+}
+
+enum RsvpStatus {
+  yes
+  no
+  maybe
+  pending
+}
+
+model Family {
+  id        String        @id @default(cuid())
+  name      String
+  createdAt DateTime      @default(now())
+  members   Member[]
+  events    FamilyEvent[]
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  familyId  String
+  name      String
+  color     String
+  role      Role
+  // E.164, optional. Only parents may read it (enforced in the read layer).
+  phone     String?
+  // SHA-256 of the personal link token. The token itself is never stored.
+  tokenHash String   @unique
+  createdAt DateTime @default(now())
+
+  family            Family             @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  activities        Activity[]
+  rsvps             Rsvp[]
+  pushSubscriptions PushSubscription[]
+  createdEvents     FamilyEvent[]      @relation("EventCreator")
+  validatedEvents   FamilyEvent[]      @relation("EventValidator")
+
+  @@index([familyId])
+}
+
+model Activity {
+  id          String    @id @default(cuid())
+  memberId    String
+  title       String
+  startsAt    DateTime
+  endsAt      DateTime
+  allDay      Boolean   @default(false)
+  isPrivate   Boolean   @default(false)
+  repeat      Repeat    @default(none)
+  repeatUntil DateTime?
+
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([memberId, startsAt])
+}
+
+model FamilyEvent {
+  id            String      @id @default(cuid())
+  familyId      String
+  // SetNull: a confirmed event outlives its creator. Proposals are deleted by the
+  // "remove member" action, not by the schema.
+  createdById   String?
+  status        EventStatus
+  validatedById String?
+  validatedAt   DateTime?
+  title         String
+  description   String?
+  startsAt      DateTime
+  endsAt        DateTime
+  allDay        Boolean     @default(false)
+  place         String?
+
+  family      Family  @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  createdBy   Member? @relation("EventCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  validatedBy Member? @relation("EventValidator", fields: [validatedById], references: [id], onDelete: SetNull)
+  rsvps       Rsvp[]
+
+  @@index([familyId, startsAt])
+}
+
+model Rsvp {
+  eventId  String
+  memberId String
+  status   RsvpStatus @default(pending)
+
+  event  FamilyEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  member Member      @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, memberId])
+  @@index([memberId])
+}
+
+model PushSubscription {
+  id       String @id @default(cuid())
+  memberId String
+  endpoint String @unique
+  p256dh   String
+  auth     String
+
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
 }
