@@ -15,6 +15,9 @@ export default defineConfig({
     environment: "node",
     include: ["lib/**/*.test.ts"],
     passWithNoTests: true,
+    // Each database test makes several round trips to Neon (cold starts included).
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
     env,
     // Database tests share one branch: run files one at a time.
     fileParallelism: false,

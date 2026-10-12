@@ -47,15 +47,15 @@
 **Description :** Un client Prisma unique (URL poolée), réutilisé en développement, et un test qui prouve la connexion et les contraintes.
 
 **Acceptance criteria :**
-- [ ] `lib/db.ts` exporte un seul client, sans import de Next ni de React
-- [ ] Le client survit au rechargement à chaud en développement (pas de connexions multipliées)
-- [ ] Test sur la branche de test : créer une famille et un membre, relire, puis nettoyer
-- [ ] Test : un second `tokenHash` identique est refusé ; un second `Rsvp` identique est refusé
-- [ ] Test : supprimer un membre supprime ses activités et ses réponses, mais garde un événement confirmé qu'il avait créé
+- [x] `lib/db.ts` exporte un seul client, sans import de Next ni de React
+- [x] Le client survit au rechargement à chaud en développement (pas de connexions multipliées)
+- [x] Test sur la branche de test : créer une famille et un membre, relire, puis nettoyer
+- [x] Test : un second `tokenHash` identique est refusé ; un second `Rsvp` identique est refusé
+- [x] Test : supprimer un membre supprime ses activités et ses réponses, mais garde un événement confirmé qu'il avait créé
 
 **Verification :**
-- [ ] `pnpm test` passe sur `.env.test`
-- [ ] `pnpm typecheck` passe
+- [x] `pnpm test` passe sur `.env.test`
+- [x] `pnpm typecheck` passe
 
 **Dependencies :** Task 2
 **Files likely touched :** `lib/db.ts`, `lib/db.test.ts`, `vitest.config.ts`
@@ -66,18 +66,18 @@
 **Description :** Fonction de génération et de hash du jeton (réutilisée à l'étape 2), et un seed réaliste pour développer les écrans suivants.
 
 **Acceptance criteria :**
-- [ ] `lib/token.ts` : génère 32 octets aléatoires (encodés pour une URL) et calcule le hash ; sans import de Next
-- [ ] Tests : deux jetons différents ; le hash est stable ; le jeton fait au moins 32 octets
-- [ ] Seed : 1 famille, 2 parents, 2 enfants (dont un avec numéro de téléphone)
-- [ ] Seed : activités variées (journée entière, privée, quotidienne, hebdomadaire avec fin, une qui chevauche un événement)
-- [ ] Seed : 1 événement confirmé avec réponses variées, 1 proposition d'enfant, un événement sur 2 jours
-- [ ] Le seed affiche les liens personnels une seule fois dans le terminal ; seuls les hash sont en base
-- [ ] Le seed vide les tables avant d'insérer et refuse de tourner contre la base de test ou de production
+- [x] `lib/token.ts` : génère 32 octets aléatoires (encodés pour une URL) et calcule le hash ; sans import de Next
+- [x] Tests : deux jetons différents ; le hash est stable ; le jeton fait au moins 32 octets
+- [x] Seed : 1 famille, 2 parents, 2 enfants (dont un avec numéro de téléphone)
+- [x] Seed : activités variées (journée entière, privée, quotidienne, hebdomadaire avec fin, une qui chevauche un événement)
+- [x] Seed : 1 événement confirmé avec réponses variées, 1 proposition d'enfant, un événement sur 2 jours
+- [x] Le seed affiche les liens personnels une seule fois dans le terminal ; seuls les hash sont en base
+- [x] Le seed vide les tables avant d'insérer et refuse de tourner contre la base de test ou de production
 
 **Verification :**
-- [ ] `pnpm test` passe
-- [ ] `pnpm db:seed` deux fois de suite donne le même état (idempotent)
-- [ ] `pnpm db:studio` : aucun jeton en clair, aucun `.env` committé
+- [x] `pnpm test` passe
+- [x] `pnpm db:seed` deux fois de suite donne le même état (idempotent)
+- [x] `pnpm db:studio` : aucun jeton en clair, aucun `.env` committé
 
 **Dependencies :** Task 3
 **Files likely touched :** `lib/token.ts`, `lib/token.test.ts`, `prisma/seed.ts`, `package.json`
