@@ -12,12 +12,25 @@ export const MEMBER_COLORS = [
   { value: "#4b5563", label: "Gris" },
 ] as const
 
-const name = z.string().trim().min(1, "Écris un prénom").max(40, "40 caractères au maximum")
+const name = z
+  .string()
+  .trim()
+  .min(1, "Écris un prénom")
+  .max(40, "40 caractères au maximum")
 
-const color = z.string().refine((v) => MEMBER_COLORS.some((c) => c.value === v), "Choisis une couleur")
+const color = z
+  .string()
+  .refine(
+    (v) => MEMBER_COLORS.some((c) => c.value === v),
+    "Choisis une couleur"
+  )
 
 export const familySchema = z.object({
-  familyName: z.string().trim().min(1, "Écris le nom de la famille").max(60, "60 caractères au maximum"),
+  familyName: z
+    .string()
+    .trim()
+    .min(1, "Écris le nom de la famille")
+    .max(60, "60 caractères au maximum"),
   name,
   color,
 })
@@ -27,12 +40,16 @@ export const memberSchema = z.object({
   color,
   role: z.enum(["parent", "child"]),
   // E.164; an empty field means "no number".
+  // Spaces, dots, dashes and parentheses are ignored: "+261 34 12 345 67" is accepted.
   phone: z
     .string()
-    .trim()
-    .regex(/^\+[1-9]\d{6,14}$/, "Format international, par exemple +261341234567")
-    .or(z.literal(""))
+    .transform((v) => v.replace(/[\s.()-]/g, ""))
+    .refine(
+      (v) => v === "" || /^\+[1-9]\d{6,14}$/.test(v),
+      "Format international, par exemple +261341234567"
+    )
     .transform((v) => v || null),
 })
 
 export type FamilyInput = z.infer<typeof familySchema>
+export type MemberInput = z.infer<typeof memberSchema>

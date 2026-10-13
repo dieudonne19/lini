@@ -11,6 +11,12 @@ export async function getSessionMember() {
   return token ? memberFromToken(token) : null
 }
 
+// The session member when they are a parent, otherwise null. Gate for every family-management action.
+export async function getSessionParent() {
+  const member = await getSessionMember()
+  return member?.role === "parent" ? member : null
+}
+
 // Only callable from a Server Function or Route Handler.
 export async function setSession(token: string) {
   const store = await cookies()

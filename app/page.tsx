@@ -12,7 +12,17 @@ export default async function Page() {
 
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-md flex-col justify-center px-4 py-12">
-      <FirstRun canCreate={canCreate}>{member ? <Home name={member.name} logoutAction={logout} /> : <LinkRequired />}</FirstRun>
+      <FirstRun canCreate={canCreate}>
+        {member ? (
+          <Home
+            name={member.name}
+            canManageFamily={member.role === "parent"}
+            logoutAction={logout}
+          />
+        ) : (
+          <LinkRequired />
+        )}
+      </FirstRun>
     </main>
   )
 }
