@@ -20,6 +20,8 @@ type ActivityFormProps = {
   action: (formData: FormData) => void
   pending: boolean
   state: FormState<ActivityField>
+  // What the form starts with (editing); once submitted, what was typed takes over.
+  initialValues?: Record<ActivityField, string>
   submitLabel: string
   cancelHref: string
 }
@@ -30,10 +32,12 @@ function ActivityForm({
   action,
   pending,
   state,
+  initialValues,
   submitLabel,
   cancelHref,
 }: ActivityFormProps) {
-  const { errors, values, message } = state ?? {}
+  const { errors, message } = state ?? {}
+  const values = state?.values ?? initialValues
   const [allDay, setAllDay] = useState(values?.allDay === "true")
   const [repeat, setRepeat] = useState(values?.repeat || "none")
 

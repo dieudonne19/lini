@@ -9,6 +9,11 @@ export function createActivity(memberId: string, input: ActivityInput) {
   return db.activity.create({ data: { ...input, memberId } })
 }
 
+// One of the member's own activities, or null (missing, or someone else's).
+export function getOwnActivity(memberId: string, activityId: string) {
+  return db.activity.findFirst({ where: { id: activityId, memberId } })
+}
+
 export function listOwnActivities(memberId: string) {
   return db.activity.findMany({
     where: { memberId },

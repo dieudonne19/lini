@@ -1,8 +1,10 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
 
 import {
+  activityToFields,
   missingFieldErrors,
   parseActivityPayload,
+  toFormValues,
   readActivityFields,
   toActivityPayload,
   type ActivityFields,
@@ -86,6 +88,79 @@ describe("toActivityPayload", () => {
   it("does not throw on an empty date: the server reports it", () => {
     const data = payload({ date: "" })
     expect(parseActivityPayload(data).success).toBe(false)
+  })
+})
+
+describe("activityToFields", () => {
+  // Typing the fields, saving, then reopening the activity must give back the same fields.
+  const roundTrip = (overrides: Partial<ActivityFields>) => {
+    const original = fields(overrides)
+    const parsed = parseActivityPayload(toActivityPayload(original))
+    if (!parsed.success) throw new Error("the fields should be valid")
+    return { original, reopened: activityToFields(parsed.data) }
+  }
+
+  it("gives back what was typed for a timed, private, repeating activity", () => {
+    const { original, reopened } = roundTrip({
+      isPrivate: true,
+      repeat: "weekly",
+      repeatUntil: "2026-12-31",
+    })
+    expect(reopened).toEqual(original)
+  })
+
+  it("gives back the same local times in other timezones", () => {
+    for (const tz of [
+      "America/Los_Angeles",
+      "Pacific/Auckland",
+      "Indian/Antananarivo",
+    ]) {
+      process.env.TZ = tz
+      const { original, reopened } = roundTrip({
+        startTime: "08:15",
+        endTime: "09:45",
+      })
+      expect(reopened, tz).toEqual(original)
+    }
+    process.env.TZ = "Europe/Paris"
+  })
+
+  it("gives back an all-day activity on the same day in every timezone", () => {
+    for (const tz of [
+      "Europe/Paris",
+      "America/Los_Angeles",
+      "Pacific/Auckland",
+    ]) {
+      process.env.TZ = tz
+      const typed = {
+        allDay: true,
+        startTime: "",
+        endTime: "",
+        repeat: "daily",
+        repeatUntil: "2026-10-20",
+      }
+      const { original, reopened } = roundTrip(typed)
+      expect(reopened, tz).toEqual(original)
+    }
+    process.env.TZ = "Europe/Paris"
+  })
+
+  it("shows an activity across midnight with its end time", () => {
+    const { reopened } = roundTrip({ startTime: "22:00", endTime: "01:00" })
+    expect(reopened).toMatchObject({
+      date: "2026-10-14",
+      startTime: "22:00",
+      endTime: "01:00",
+    })
+  })
+
+  it("turns the checkboxes into form values", () => {
+    expect(
+      toFormValues(fields({ allDay: true, isPrivate: false }))
+    ).toMatchObject({
+      allDay: "true",
+      isPrivate: "false",
+    })
   })
 })
 

@@ -1,13 +1,11 @@
 import { useActionState } from "react"
 
-import {
-  createActivityAction,
-  type ActivityActionState,
-} from "@/app/agenda/actions"
+import type { ActivityActionState } from "@/app/agenda/actions"
 import {
   missingFieldErrors,
   readActivityFields,
   toActivityPayload,
+  toFormValues,
 } from "@/lib/activity-form"
 import type { FormState } from "@/lib/form-state"
 
@@ -34,9 +32,11 @@ function toFormErrors(result: ActivityActionState) {
   }
 }
 
-// Converts the typed local date and times to UTC in the browser, sends them, and keeps what was typed
-// so the form is refilled when the server finds an error.
-export function useActivityForm() {
+// Converts the typed local date and times to UTC in the browser, sends them with `save`
+// (create or update), and keeps what was typed so the form is refilled when something is refused.
+export function useActivityForm(
+  save: (payload: FormData) => Promise<ActivityActionState>
+) {
   const [state, action, pending] = useActionState(
     async (
       _prev: FormState<ActivityField>,
@@ -45,22 +45,11 @@ export function useActivityForm() {
       const fields = readActivityFields(formData)
       const missing = missingFieldErrors(fields)
       const hasMissing = Object.keys(missing).length > 0
-      const result = hasMissing
-        ? null
-        : await createActivityAction(null, toActivityPayload(fields))
+      const result = hasMissing ? null : await save(toActivityPayload(fields))
       return {
         message: result?.message,
         errors: hasMissing ? missing : toFormErrors(result),
-        values: {
-          title: fields.title,
-          date: fields.date,
-          startTime: fields.startTime,
-          endTime: fields.endTime,
-          allDay: String(fields.allDay),
-          isPrivate: String(fields.isPrivate),
-          repeat: fields.repeat,
-          repeatUntil: fields.repeatUntil,
-        },
+        values: toFormValues(fields),
       }
     },
     null

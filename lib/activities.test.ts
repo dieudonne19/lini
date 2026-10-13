@@ -3,6 +3,7 @@ import { afterAll, describe, expect, it } from "vitest"
 import {
   createActivity,
   deleteActivity,
+  getOwnActivity,
   listOwnActivities,
   updateActivity,
 } from "@/lib/activities"
@@ -105,6 +106,14 @@ describe.skipIf(!process.env.DATABASE_URL)("activities", () => {
     expect(
       await db.activity.findUniqueOrThrow({ where: { id } })
     ).toMatchObject({ title: "Cours de danse", memberId: owner.id })
+  })
+
+  it("reads its own activity, and nobody else's", async () => {
+    const { owner, other } = await setupMembers()
+    const { id } = await createActivity(owner.id, parse())
+    expect((await getOwnActivity(owner.id, id))?.title).toBe("Cours de danse")
+    expect(await getOwnActivity(other.id, id)).toBeNull()
+    expect(await getOwnActivity(owner.id, "does-not-exist")).toBeNull()
   })
 
   it("deletes its own activity", async () => {

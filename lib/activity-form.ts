@@ -29,6 +29,50 @@ export function readActivityFields(data: FormDataLike): ActivityFields {
   }
 }
 
+const pad = (n: number) => String(n).padStart(2, "0")
+
+// "2026-10-14" and "18:00" in the device timezone.
+const localDate = (d: Date) =>
+  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+const localTime = (d: Date) => `${pad(d.getHours())}:${pad(d.getMinutes())}`
+// The UTC calendar date, for all-day activities.
+const utcDate = (d: Date) => d.toISOString().slice(0, 10)
+
+// The stored activity as the form fields a person would have typed: the inverse of toActivityPayload.
+// Runs in the browser: times are shown in the device timezone.
+export function activityToFields(activity: {
+  title: string
+  startsAt: Date
+  endsAt: Date
+  allDay: boolean
+  isPrivate: boolean
+  repeat: string
+  repeatUntil: Date | null
+}): ActivityFields {
+  const { title, startsAt, endsAt, allDay, isPrivate, repeat, repeatUntil } =
+    activity
+  const dateOf = allDay ? utcDate : localDate
+  return {
+    title,
+    date: dateOf(startsAt),
+    startTime: allDay ? "" : localTime(startsAt),
+    endTime: allDay ? "" : localTime(endsAt),
+    allDay,
+    isPrivate,
+    repeat,
+    repeatUntil: repeatUntil ? dateOf(repeatUntil) : "",
+  }
+}
+
+// Fields as the string values a form is refilled with (checkboxes become "true" / "false").
+export function toFormValues(fields: ActivityFields) {
+  return {
+    ...fields,
+    allDay: String(fields.allDay),
+    isPrivate: String(fields.isPrivate),
+  }
+}
+
 // Friendly messages for fields left empty, shown before anything is sent. The server validates again.
 export function missingFieldErrors({
   title,
