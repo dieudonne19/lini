@@ -12,7 +12,7 @@ export default async function Page() {
 
   const members = await listFamilyMembers(parent)
   return (
-    <main className="mx-auto flex min-h-svh w-full max-w-md flex-col gap-10 px-4 py-12">
+    <main className="mx-auto flex flex-1 w-full max-w-md flex-col gap-10 px-4 py-12">
       <section className="flex flex-col gap-2">
         <h1 className="text-2xl font-semibold tracking-tight">Famille</h1>
         <ManageMembers members={members} currentMemberId={parent.id} />

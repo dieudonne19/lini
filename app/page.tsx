@@ -11,7 +11,7 @@ export default async function Page() {
   const canCreate = !member && !(await hasFamily())
 
   return (
-    <main className="mx-auto flex min-h-svh w-full max-w-md flex-col justify-center px-4 py-12">
+    <main className="mx-auto flex flex-1 w-full max-w-md flex-col justify-center px-4 py-12">
       <FirstRun canCreate={canCreate}>
         {member ? (
           <Home
