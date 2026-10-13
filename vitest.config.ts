@@ -18,7 +18,7 @@ export default defineConfig({
     // Each database test makes several round trips to Neon (cold starts included).
     testTimeout: 30_000,
     hookTimeout: 30_000,
-    env,
+    env: { SESSION_SECRET: "test-secret-test-secret-test-secret-0", ...env },
     // Database tests share one branch: run files one at a time.
     fileParallelism: false,
   },
