@@ -42,13 +42,10 @@ export function weekWindow(monday: string | undefined, now: Date) {
   }
 }
 
-// The month asked for with the days of the neighbouring weeks its grid shows. Without a parameter: the
-// month of today in UTC. Near a month change a device can be in the next or previous month: the
-// browser then moves to its own month by changing the address (the window does not cover it).
-export function monthWindow(month: string | undefined, now: Date) {
-  const [year, number] = month
-    ? month.split("-").map(Number)
-    : [now.getUTCFullYear(), now.getUTCMonth() + 1]
+// The month asked for ("2026-10") with the days of the neighbouring weeks its grid shows. The month view
+// always has an explicit month in its address, so the window never depends on the device's "today".
+export function monthWindow(month: string) {
+  const [year, number] = month.split("-").map(Number)
   const first = Date.UTC(year, number - 1, 1)
   const nextFirst = Date.UTC(year, number, 1)
   return {

@@ -1,24 +1,37 @@
 import { Suspense } from "react"
 
 import { getSessionMember } from "@/app/session"
+import { CalendarSkeleton } from "@/components/calendar-skeleton"
 import { FirstRun } from "@/components/first-run"
 import { LinkRequired } from "@/components/link-required"
-import { WeekSkeleton } from "@/components/week-skeleton"
+import { MonthView } from "@/components/month-view"
 import { WeekView } from "@/components/week-view"
-import { parseWeekParam, weekWindow } from "@/lib/calendar-params"
+import {
+  monthWindow,
+  parseMonthParam,
+  parseWeekParam,
+  weekWindow,
+} from "@/lib/calendar-params"
 import { hasFamily } from "@/lib/families"
 import { listFamilySchedule } from "@/lib/schedule"
 
 type Member = NonNullable<Awaited<ReturnType<typeof getSessionMember>>>
 
-// Reads the week asked for and the family's schedule around it; the week itself is laid out in the browser.
-async function WeekData({
+// Reads the family's schedule around the period asked for: the month `month` ("2026-10") when there is one,
+// otherwise the week starting `monday` (the current week by default). The period itself is laid out in the browser.
+async function CalendarData({
   member,
+  month,
   monday,
 }: {
   member: Member
+  month: string | undefined
   monday: string | undefined
 }) {
+  if (month) {
+    const schedule = await listFamilySchedule(member, monthWindow(month))
+    return <MonthView schedule={schedule} month={month} />
+  }
   const schedule = await listFamilySchedule(
     member,
     weekWindow(monday, new Date())
@@ -31,11 +44,13 @@ async function WeekData({
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ du?: string }>
+  searchParams: Promise<{ du?: string; mois?: string }>
 }) {
   const member = await getSessionMember()
   const canCreate = !member && !(await hasFamily())
-  const monday = parseWeekParam((await searchParams).du)
+  const { du, mois } = await searchParams
+  const month = parseMonthParam(mois)
+  const monday = month ? undefined : parseWeekParam(du)
 
   return (
     <main
@@ -43,8 +58,11 @@ export default async function Page({
     >
       <FirstRun canCreate={canCreate}>
         {member ? (
-          <Suspense key={monday ?? "current"} fallback={<WeekSkeleton />}>
-            <WeekData member={member} monday={monday} />
+          <Suspense
+            key={month ?? monday ?? "current-week"}
+            fallback={<CalendarSkeleton />}
+          >
+            <CalendarData member={member} month={month} monday={monday} />
           </Suspense>
         ) : (
           <LinkRequired />

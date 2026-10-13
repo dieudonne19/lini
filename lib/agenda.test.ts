@@ -3,10 +3,13 @@ import { afterAll, describe, expect, it } from "vitest"
 import { buildAgendaDays, type AgendaActivity } from "@/lib/agenda"
 import {
   formatDayHeading,
+  formatEventWhen,
+  formatFullDay,
   formatMonth,
   formatRepeat,
   formatShortDay,
   formatTimeRange,
+  formatWeekday,
   formatWeekRange,
 } from "@/lib/format-date"
 
@@ -168,6 +171,35 @@ describe("date formats", () => {
       "28 décembre 2026 – 3 janvier 2027"
     )
     expect(formatMonth(new Date(2026, 9, 1))).toBe("octobre 2026")
+  })
+
+  it("formats a month column header and a full day", () => {
+    expect(formatWeekday(new Date(2026, 9, 12))).toBe("lun.")
+    expect(formatFullDay(new Date(2026, 9, 17))).toBe("samedi 17 octobre")
+  })
+
+  it("says when a family event takes place", () => {
+    const plain = (text: string) => text.replace(/\s+/g, " ")
+    const weekend = {
+      allDay: true,
+      startsAt: new Date("2026-10-17T00:00:00.000Z"),
+      endsAt: new Date("2026-10-18T00:00:00.000Z"),
+    }
+    expect(plain(formatEventWhen(weekend))).toBe(
+      "Samedi 17 – dimanche 18 octobre"
+    )
+    expect(formatEventWhen({ ...weekend, endsAt: weekend.startsAt })).toBe(
+      "Samedi 17 octobre"
+    )
+    expect(
+      plain(
+        formatEventWhen({
+          allDay: false,
+          startsAt: new Date(2026, 9, 14, 19),
+          endsAt: new Date(2026, 9, 14, 21),
+        })
+      )
+    ).toBe("Mercredi 14 octobre, 19:00 – 21:00")
   })
 
   it("describes a repetition and its end", () => {

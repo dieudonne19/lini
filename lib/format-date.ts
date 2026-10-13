@@ -78,3 +78,32 @@ export function formatWeekRange(start: Date) {
 export function formatMonth(month: Date) {
   return formatDate({ month: "long", year: "numeric" }, month)
 }
+
+// "lun.": a column header of the month.
+export function formatWeekday(day: Date) {
+  return formatDate({ weekday: "short" }, day)
+}
+
+// "samedi 17 octobre".
+export function formatFullDay(day: Date) {
+  return formatDate({ weekday: "long", day: "numeric", month: "long" }, day)
+}
+
+// When a family event takes place: "Samedi 17 – dimanche 18 octobre" (all-day, UTC dates shown as is)
+// or "Mercredi 14 octobre, 19:00 – 21:00" (device timezone).
+export function formatEventWhen(
+  event: Pick<AgendaItem, "startsAt" | "endsAt" | "allDay">
+) {
+  const options = { weekday: "long", day: "numeric", month: "long" } as const
+  if (event.allDay) {
+    const utc = (d: Date) =>
+      new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
+    const [start, end] = [utc(event.startsAt), utc(event.endsAt)]
+    return capitalize(
+      start.getTime() === end.getTime()
+        ? formatDate(options, start)
+        : new Intl.DateTimeFormat("fr-FR", options).formatRange(start, end)
+    )
+  }
+  return `${capitalize(formatDate(options, event.startsAt))}, ${formatTimeRange(event)}`
+}

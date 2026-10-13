@@ -51,3 +51,14 @@ export function buildMonth(schedule: Schedule, month: Date): MonthDay[][] {
     })
   )
 }
+
+// The family events touching the days of `weeks` that belong to the month, each once, in start order.
+export function monthEvents(weeks: MonthDay[][]) {
+  const events = new Map<string, ScheduleEvent>()
+  for (const day of weeks.flat()) {
+    if (day.inMonth) for (const event of day.events) events.set(event.id, event)
+  }
+  return [...events.values()].sort(
+    (a, b) => a.startsAt.getTime() - b.startsAt.getTime()
+  )
+}

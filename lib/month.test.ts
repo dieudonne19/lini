@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, it } from "vitest"
 
 import { toIsoDate } from "@/lib/calendar-dates"
-import { buildMonth, monthGrid } from "@/lib/month"
+import { buildMonth, monthEvents, monthGrid } from "@/lib/month"
 import type { Schedule, ScheduleActivity, ScheduleMember } from "@/lib/schedule"
 import { buildWeek } from "@/lib/week"
 
@@ -176,6 +176,52 @@ describe("buildMonth", () => {
       expect(busy, tz).toEqual(["2026-10-16"])
     }
     process.env.TZ = "Europe/Paris"
+  })
+})
+
+describe("monthEvents", () => {
+  const event = (id: string, startsAt: Date, endsAt: Date, allDay = false) => ({
+    id,
+    title: id,
+    place: null,
+    startsAt,
+    endsAt,
+    allDay,
+  })
+
+  it("lists each event once, in start order, even when it spans several days", () => {
+    const weekend = event(
+      "weekend",
+      new Date("2026-10-17T00:00:00.000Z"),
+      new Date("2026-10-18T00:00:00.000Z"),
+      true
+    )
+    const dinner = event(
+      "dinner",
+      new Date(2026, 9, 3, 19),
+      new Date(2026, 9, 3, 21)
+    )
+    const weeks = buildMonth(schedule([], [weekend, dinner]), OCTOBER)
+    expect(monthEvents(weeks).map((e) => e.id)).toEqual(["dinner", "weekend"])
+  })
+
+  it("leaves out events that only touch the neighbouring months shown in the grid", () => {
+    const lastDaySeptember = event(
+      "september",
+      new Date(2026, 8, 30, 10),
+      new Date(2026, 8, 30, 11)
+    )
+    const firstDayNovember = event(
+      "november",
+      new Date(2026, 10, 1, 10),
+      new Date(2026, 10, 1, 11)
+    )
+    const weeks = buildMonth(
+      schedule([], [lastDaySeptember, firstDayNovember]),
+      OCTOBER
+    )
+    expect(weeks.flat().some((day) => day.events.length > 0)).toBe(true)
+    expect(monthEvents(weeks)).toEqual([])
   })
 })
 

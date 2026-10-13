@@ -116,7 +116,7 @@ describe("monthWindow", () => {
         for (let month = 1; month <= 12; month++) {
           const iso = `${year}-${String(month).padStart(2, "0")}`
           const grid = monthGrid(new Date(year, month - 1, 1)).flat()
-          const { from, to } = monthWindow(iso, new Date())
+          const { from, to } = monthWindow(iso)
           const label = `${tz} ${iso}`
           expect(from.getTime() - SERVER_MARGIN_MS, label).toBeLessThanOrEqual(
             grid[0].getTime()
@@ -131,10 +131,7 @@ describe("monthWindow", () => {
 
   it("stays within the 70 days the server accepts", () => {
     for (let month = 1; month <= 12; month++) {
-      const { from, to } = monthWindow(
-        `2026-${String(month).padStart(2, "0")}`,
-        new Date()
-      )
+      const { from, to } = monthWindow(`2026-${String(month).padStart(2, "0")}`)
       expect(to.getTime() - from.getTime()).toBeLessThanOrEqual(70 * DAY_MS)
     }
     const week = weekWindow(undefined, new Date())
@@ -143,11 +140,8 @@ describe("monthWindow", () => {
     )
   })
 
-  it("without a parameter, uses the month of today in UTC", () => {
-    const { from, to } = monthWindow(
-      undefined,
-      new Date("2026-10-20T12:00:00Z")
-    )
+  it("spans the month with eight days of margin on each side", () => {
+    const { from, to } = monthWindow("2026-10")
     expect(from.toISOString()).toBe("2026-09-23T00:00:00.000Z")
     expect(to.toISOString()).toBe("2026-11-09T00:00:00.000Z")
   })

@@ -3,51 +3,54 @@ import Link from "next/link"
 
 import { buttonVariants } from "@/components/ui/button"
 
-type WeekNavProps = {
+type PeriodNavProps = {
   label: string
   previousHref: string
+  previousLabel: string
   nextHref: string
-  todayHref: string
-  isCurrentWeek: boolean
+  nextLabel: string
+  // Link back to the current period, shown only when another period is displayed.
+  currentHref: string
+  currentLabel: string
+  isCurrent: boolean
 }
 
 const iconLink = buttonVariants({ variant: "outline", className: "size-11" })
 
-// Pure: the displayed week and the links to the previous, next and current week.
-function WeekNav({
+// Pure: the displayed period (a week or a month) and the links to the previous, next and current one.
+function PeriodNav({
   label,
   previousHref,
+  previousLabel,
   nextHref,
-  todayHref,
-  isCurrentWeek,
-}: WeekNavProps) {
+  nextLabel,
+  currentHref,
+  currentLabel,
+  isCurrent,
+}: PeriodNavProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
       <h1 className="text-2xl font-semibold tracking-tight">{label}</h1>
-      <nav aria-label="Changer de semaine" className="flex items-center gap-2">
+      <nav aria-label="Changer de période" className="flex items-center gap-2">
         <Link
           href={previousHref}
-          aria-label="Semaine précédente"
+          aria-label={previousLabel}
           className={iconLink}
         >
           <ChevronLeft aria-hidden />
         </Link>
-        {!isCurrentWeek && (
+        {!isCurrent && (
           <Link
-            href={todayHref}
+            href={currentHref}
             className={buttonVariants({
               variant: "outline",
               className: "h-11",
             })}
           >
-            Aujourd&apos;hui
+            {currentLabel}
           </Link>
         )}
-        <Link
-          href={nextHref}
-          aria-label="Semaine suivante"
-          className={iconLink}
-        >
+        <Link href={nextHref} aria-label={nextLabel} className={iconLink}>
           <ChevronRight aria-hidden />
         </Link>
       </nav>
@@ -55,4 +58,4 @@ function WeekNav({
   )
 }
 
-export { WeekNav }
+export { PeriodNav }
