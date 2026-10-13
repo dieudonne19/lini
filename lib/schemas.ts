@@ -115,3 +115,57 @@ export const activitySchema = z
   }))
 
 export type ActivityInput = z.infer<typeof activitySchema>
+
+const MAX_EVENT_DAYS = 31
+
+// A family event, as the server stores it. Its status is never part of the input: the server decides it from
+// the member's role. All-day: first and last day (included) as midnights UTC, 1 to 31 days.
+// With times: start and end instants, the end after the start, 31 days at most.
+export const eventSchema = z
+  .object({
+    title: z
+      .string()
+      .trim()
+      .min(1, "Écris un titre")
+      .max(80, "80 caractères au maximum"),
+    description: z
+      .string()
+      .trim()
+      .max(500, "500 caractères au maximum")
+      .transform((value) => value || null),
+    place: z
+      .string()
+      .trim()
+      .max(80, "80 caractères au maximum")
+      .transform((value) => value || null),
+    startsAt: instant,
+    endsAt: instant,
+    allDay: z.boolean(),
+  })
+  .superRefine((event, ctx) => {
+    const issue = (path: string, message: string) =>
+      ctx.addIssue({ code: "custom", path: [path], message })
+    // When a date failed to parse, Zod skips its transform but still runs this check on the raw string.
+    // The date's own error is already reported: stop here.
+    if (![event.startsAt, event.endsAt].every((d) => d instanceof Date)) return
+
+    const span = event.endsAt.getTime() - event.startsAt.getTime()
+    if (event.allDay) {
+      if (
+        event.startsAt.getTime() % DAY_MS ||
+        event.endsAt.getTime() % DAY_MS
+      ) {
+        issue("startsAt", "Une journée entière commence à minuit")
+      } else if (span < 0) {
+        issue("endsAt", "Le dernier jour ne peut pas être avant le premier")
+      } else if (span / DAY_MS + 1 > MAX_EVENT_DAYS) {
+        issue("endsAt", `Un événement dure ${MAX_EVENT_DAYS} jours au maximum`)
+      }
+    } else if (span <= 0) {
+      issue("endsAt", "La fin doit être après le début")
+    } else if (span > MAX_EVENT_DAYS * DAY_MS) {
+      issue("endsAt", `Un événement dure ${MAX_EVENT_DAYS} jours au maximum`)
+    }
+  })
+
+export type EventInput = z.infer<typeof eventSchema>

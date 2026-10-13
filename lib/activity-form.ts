@@ -1,3 +1,11 @@
+import {
+  localDate,
+  localTime,
+  text,
+  toInstant,
+  utcDate,
+  type FormDataLike,
+} from "@/lib/form-dates"
 import { activitySchema } from "@/lib/schemas"
 
 // What a person types in the activity form: a local date, local times, checkboxes.
@@ -12,10 +20,6 @@ export type ActivityFields = {
   repeatUntil: string // "2026-12-31" or ""
 }
 
-type FormDataLike = { get(name: string): FormDataEntryValue | null }
-
-const text = (data: FormDataLike, name: string) => String(data.get(name) ?? "")
-
 export function readActivityFields(data: FormDataLike): ActivityFields {
   return {
     title: text(data, "title"),
@@ -28,15 +32,6 @@ export function readActivityFields(data: FormDataLike): ActivityFields {
     repeatUntil: text(data, "repeatUntil"),
   }
 }
-
-const pad = (n: number) => String(n).padStart(2, "0")
-
-// "2026-10-14" and "18:00" in the device timezone.
-const localDate = (d: Date) =>
-  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
-const localTime = (d: Date) => `${pad(d.getHours())}:${pad(d.getMinutes())}`
-// The UTC calendar date, for all-day activities.
-const utcDate = (d: Date) => d.toISOString().slice(0, 10)
 
 // The stored activity as the form fields a person would have typed: the inverse of toActivityPayload.
 // Runs in the browser: times are shown in the device timezone.
@@ -90,10 +85,6 @@ export function missingFieldErrors({
   if (!allDay && !endTime) errors.endTime = ["Choisis une heure de fin"]
   return errors
 }
-
-// An unparseable date is passed on as typed, so the server reports it instead of this code throwing.
-const toInstant = (date: Date, typed: string) =>
-  Number.isNaN(date.getTime()) ? typed : date.toISOString()
 
 // Converts the typed local date and times into the UTC instants the server stores, as form data.
 // Runs in the browser: "local" is the device timezone.
