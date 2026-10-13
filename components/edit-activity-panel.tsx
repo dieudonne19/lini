@@ -7,7 +7,7 @@ import {
   updateActivityAction,
 } from "@/app/agenda/actions"
 import { ActivityForm } from "@/components/activity-form"
-import { DeleteActivity } from "@/components/delete-activity"
+import { ConfirmDelete } from "@/components/confirm-delete"
 import { useActivityForm } from "@/hooks/use-activity-form"
 import { useIsClient } from "@/hooks/use-is-client"
 import { activityToFields, toFormValues } from "@/lib/activity-form"
@@ -39,13 +39,18 @@ export function EditActivityPanel({ activity }: { activity: AgendaActivity }) {
         submitLabel="Enregistrer"
         cancelHref="/agenda"
       />
-      <DeleteActivity
-        title={activity.title}
-        repeats={activity.repeat !== "none"}
+      <ConfirmDelete
+        label="Supprimer l'activité"
+        confirmLabel="Supprimer l'activité"
+        pendingLabel="Suppression…"
         action={deleteAction}
         pending={deleting}
         message={deleteState?.message}
-      />
+      >
+        Supprimer « {activity.title} »{" "}
+        {activity.repeat !== "none" ? "supprime toutes ses répétitions. " : ""}
+        Cette action est définitive.
+      </ConfirmDelete>
     </div>
   )
 }

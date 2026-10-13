@@ -1,26 +1,31 @@
 import { Button } from "@/components/ui/button"
 
-type DeleteActivityProps = {
-  title: string
-  // True for a repeating activity: deleting it removes every occurrence.
-  repeats: boolean
+type ConfirmDeleteProps = {
+  // The link that opens the confirmation, and the button that confirms (often the same words).
+  label: string
+  confirmLabel: string
+  pendingLabel: string
+  // What will be lost, in a sentence the person reads before confirming.
+  children: React.ReactNode
   action: () => void
   pending: boolean
   message?: string
 }
 
 // Pure: two-step deletion with a native <details>, so no state is needed.
-function DeleteActivity({
-  title,
-  repeats,
+function ConfirmDelete({
+  label,
+  confirmLabel,
+  pendingLabel,
+  children,
   action,
   pending,
   message,
-}: DeleteActivityProps) {
+}: ConfirmDeleteProps) {
   return (
     <details>
       <summary className="inline-flex h-11 cursor-pointer items-center text-sm font-medium text-destructive underline-offset-4 hover:underline">
-        Supprimer l&apos;activité
+        {label}
       </summary>
       <form
         action={action}
@@ -31,22 +36,18 @@ function DeleteActivity({
             {message}
           </p>
         )}
-        <p className="text-sm">
-          Supprimer « {title} »{" "}
-          {repeats ? "supprime toutes ses répétitions. " : ""}
-          Cette action est définitive.
-        </p>
+        <p className="text-sm">{children}</p>
         <Button
           type="submit"
           variant="destructive"
           className="h-11 justify-start"
           disabled={pending}
         >
-          {pending ? "Suppression…" : "Supprimer l'activité"}
+          {pending ? pendingLabel : confirmLabel}
         </Button>
       </form>
     </details>
   )
 }
 
-export { DeleteActivity }
+export { ConfirmDelete }

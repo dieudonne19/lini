@@ -11,12 +11,9 @@ import {
   updateActivity,
 } from "@/lib/activities"
 import { parseActivityPayload } from "@/lib/activity-form"
+import type { ActionResult } from "@/lib/form-state"
 
-export type ActivityActionState = {
-  message?: string
-  // Keyed by the stored field names (title, startsAt, endsAt, repeat, repeatUntil).
-  errors?: Partial<Record<string, string[]>>
-} | null
+export type ActivityActionState = ActionResult
 
 const LINK_INVALID =
   "Ton lien ne fonctionne plus. Demande-en un nouveau à un parent."
