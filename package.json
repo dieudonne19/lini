@@ -11,10 +11,10 @@
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "db:migrate": "prisma migrate dev",
+    "db:migrate": "tsx prisma/migrate.ts",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
-    "db:migrate:test": "cross-env NODE_ENV=test prisma migrate deploy"
+    "db:migrate:test": "cross-env NODE_ENV=test tsx prisma/migrate.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
