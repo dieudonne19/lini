@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest"
+import { afterAll, describe, expect, it } from "vitest"
 
 import { buildAgendaDays, type AgendaActivity } from "@/lib/agenda"
 import {
@@ -7,11 +7,9 @@ import {
   formatTimeRange,
 } from "@/lib/format-date"
 
-// Depends on the runtime timezone: set it explicitly and restore it afterwards.
+// Depends on the runtime timezone: set it explicitly, before any date below is built, and restore it afterwards.
 const originalTz = process.env.TZ
-beforeAll(() => {
-  process.env.TZ = "Europe/Paris"
-})
+process.env.TZ = "Europe/Paris"
 afterAll(() => {
   if (originalTz === undefined) delete process.env.TZ
   else process.env.TZ = originalTz

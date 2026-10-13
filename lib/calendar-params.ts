@@ -1,0 +1,58 @@
+import { z } from "zod"
+
+// The displayed period lives in the address: `?du=2026-10-12` (a week) or `?mois=2026-10` (a month).
+// The server reads only the window around it. These functions work on dates, not on a timezone.
+
+const DAY_MS = 24 * 60 * 60 * 1000
+const dateParam = z.iso.date()
+const monthParam = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/)
+
+const utcDay = (iso: string) => new Date(`${iso}T00:00:00.000Z`)
+const utcMondayOf = (date: Date) =>
+  new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate() - ((date.getUTCDay() + 6) % 7)
+    )
+  )
+
+// Any valid date -> the Monday ("2026-10-12") of its week. Anything else -> undefined (use the default).
+export function parseWeekParam(value: string | undefined) {
+  const parsed = dateParam.safeParse(value)
+  return parsed.success
+    ? utcMondayOf(utcDay(parsed.data)).toISOString().slice(0, 10)
+    : undefined
+}
+
+// "2026-10" -> "2026-10". Anything else -> undefined.
+export function parseMonthParam(value: string | undefined) {
+  const parsed = monthParam.safeParse(value)
+  return parsed.success ? parsed.data : undefined
+}
+
+// The week asked for, with a week on each side so the neighbours are already there. Without a parameter:
+// the week of today in UTC. The device may be up to 14 hours ahead or behind, which moves "today" by at
+// most one day: its own current week is always inside this window.
+export function weekWindow(monday: string | undefined, now: Date) {
+  const base = monday ? utcDay(monday) : utcMondayOf(now)
+  return {
+    from: new Date(base.getTime() - 7 * DAY_MS),
+    to: new Date(base.getTime() + 14 * DAY_MS),
+  }
+}
+
+// The month asked for with the days of the neighbouring weeks its grid shows. Without a parameter: the
+// month of today in UTC. Near a month change a device can be in the next or previous month: the
+// browser then moves to its own month by changing the address (the window does not cover it).
+export function monthWindow(month: string | undefined, now: Date) {
+  const [year, number] = month
+    ? month.split("-").map(Number)
+    : [now.getUTCFullYear(), now.getUTCMonth() + 1]
+  const first = Date.UTC(year, number - 1, 1)
+  const nextFirst = Date.UTC(year, number, 1)
+  return {
+    from: new Date(first - 8 * DAY_MS),
+    to: new Date(nextFirst + 8 * DAY_MS),
+  }
+}

@@ -1,5 +1,9 @@
 import type { Activity } from "@/lib/generated/prisma/client"
-import { expandActivity, type Occurrence } from "@/lib/recurrence"
+import {
+  expandActivity,
+  type Occurrence,
+  type RecurringActivity,
+} from "@/lib/recurrence"
 
 export type AgendaActivity = Pick<
   Activity,
@@ -13,11 +17,16 @@ export type AgendaActivity = Pick<
   | "repeatUntil"
 >
 
-// One occurrence of an activity, on the day it starts.
-export type AgendaItem = Occurrence & { activity: AgendaActivity }
+// One occurrence of an activity, on the day it starts. Generic so the week and month views can
+// reuse it with their own activity type (which may have no title).
+export type AgendaItem<T extends RecurringActivity = AgendaActivity> =
+  Occurrence & { activity: T }
 
 // `date` is local midnight of the day.
-export type AgendaDay = { date: Date; items: AgendaItem[] }
+export type AgendaDay<T extends RecurringActivity = AgendaActivity> = {
+  date: Date
+  items: AgendaItem<T>[]
+}
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -35,11 +44,11 @@ function localDay({ startsAt, allDay }: Occurrence) {
 
 // The days that have something to show among the `dayCount` days starting today, in the device timezone.
 // shortcut: an occurrence that crosses midnight is listed on the day it starts only; revisit with the week view.
-export function buildAgendaDays(
-  activities: AgendaActivity[],
+export function buildAgendaDays<T extends RecurringActivity>(
+  activities: T[],
   today: Date,
   dayCount: number
-): AgendaDay[] {
+): AgendaDay<T>[] {
   const first = new Date(today.getFullYear(), today.getMonth(), today.getDate())
   const end = new Date(first)
   end.setDate(end.getDate() + dayCount)
@@ -49,7 +58,7 @@ export function buildAgendaDays(
     new Date(end.getTime() + DAY_MS),
   ] as const
 
-  const days = new Map<number, AgendaDay>()
+  const days = new Map<number, AgendaDay<T>>()
   for (const activity of activities) {
     for (const occurrence of expandActivity(activity, ...window)) {
       const date = localDay(occurrence)
