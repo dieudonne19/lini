@@ -16,6 +16,7 @@ function AppNav({ currentPath, canManageFamily, logoutAction }: AppNavProps) {
   const links = [
     { href: "/", label: "Semaine" },
     { href: "/agenda", label: "Mon agenda" },
+    { href: "/evenements", label: "Événements" },
     ...(canManageFamily ? [{ href: "/famille", label: "Famille" }] : []),
   ]
   const isCurrent = (href: string) =>
