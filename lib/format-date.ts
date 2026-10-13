@@ -57,3 +57,24 @@ export function formatRepeat({
   )
   return `${every} jusqu'au ${until}`
 }
+
+// "lun. 12": a column header of the week.
+export function formatShortDay(day: Date) {
+  return formatDate({ weekday: "short", day: "numeric" }, day)
+}
+
+// "12 – 18 octobre 2026", "28 sept. – 4 oct. 2026" or across years, for the week starting at `start`.
+export function formatWeekRange(start: Date) {
+  const end = new Date(start)
+  end.setDate(end.getDate() + 6)
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).formatRange(start, end)
+}
+
+// "octobre 2026".
+export function formatMonth(month: Date) {
+  return formatDate({ month: "long", year: "numeric" }, month)
+}

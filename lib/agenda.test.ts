@@ -3,8 +3,11 @@ import { afterAll, describe, expect, it } from "vitest"
 import { buildAgendaDays, type AgendaActivity } from "@/lib/agenda"
 import {
   formatDayHeading,
+  formatMonth,
   formatRepeat,
+  formatShortDay,
   formatTimeRange,
+  formatWeekRange,
 } from "@/lib/format-date"
 
 // Depends on the runtime timezone: set it explicitly, before any date below is built, and restore it afterwards.
@@ -149,6 +152,22 @@ describe("date formats", () => {
     const a = activity({ title: "Danse" })
     expect(formatTimeRange(a)).toBe("18:00 – 19:00")
     expect(formatTimeRange({ ...a, allDay: true })).toBe("Journée entière")
+  })
+
+  it("formats a week column header, a week range and a month", () => {
+    // ICU puts thin no-break spaces around the dash of a range: compare with plain spaces.
+    const plain = (text: string) => text.replace(/\s+/g, " ")
+    expect(formatShortDay(new Date(2026, 9, 12))).toBe("lun. 12")
+    expect(plain(formatWeekRange(new Date(2026, 9, 12)))).toBe(
+      "12–18 octobre 2026"
+    )
+    expect(plain(formatWeekRange(new Date(2026, 8, 28)))).toBe(
+      "28 septembre – 4 octobre 2026"
+    )
+    expect(plain(formatWeekRange(new Date(2026, 11, 28)))).toBe(
+      "28 décembre 2026 – 3 janvier 2027"
+    )
+    expect(formatMonth(new Date(2026, 9, 1))).toBe("octobre 2026")
   })
 
   it("describes a repetition and its end", () => {

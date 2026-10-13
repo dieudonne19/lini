@@ -1,4 +1,5 @@
 import { cookies } from "next/headers"
+import { cache } from "react"
 
 import { memberFromToken } from "@/lib/auth"
 import { signSession, verifySession } from "@/lib/session"
@@ -6,10 +7,11 @@ import { signSession, verifySession } from "@/lib/session"
 const SESSION_COOKIE = "lini_session"
 
 // The member behind the session cookie, or null (no cookie, forged, revoked or removed).
-export async function getSessionMember() {
+// Memoized per request: the layout (navigation) and the page both ask, the database is read once.
+export const getSessionMember = cache(async () => {
   const token = verifySession((await cookies()).get(SESSION_COOKIE)?.value)
   return token ? memberFromToken(token) : null
-}
+})
 
 // The session member when they are a parent, otherwise null. Gate for every family-management action.
 export async function getSessionParent() {

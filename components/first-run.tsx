@@ -23,20 +23,23 @@ export function FirstRun({
 
   if (state?.token) {
     const link = personalLink(window.location.origin, state.token)
+    // The page behind is the (wide) week by now: keep the card in a narrow column.
     return (
-      <PersonalLinkCard
-        title="Ta famille est créée"
-        headingLevel="h1"
-        link={link}
-        copied={copied}
-        onCopy={() => copy(link)}
-        continueLabel="Ouvrir l'agenda"
-        onContinue={() => window.location.reload()}
-      >
-        Voici ton lien personnel. Il te connecte sans mot de passe et ne
-        s&apos;affichera plus : copie-le maintenant. Quiconque a ce lien est
-        toi, ne le partage pas.
-      </PersonalLinkCard>
+      <div className="mx-auto w-full max-w-md py-8">
+        <PersonalLinkCard
+          title="Ta famille est créée"
+          headingLevel="h1"
+          link={link}
+          copied={copied}
+          onCopy={() => copy(link)}
+          continueLabel="Ouvrir la semaine"
+          onContinue={() => window.location.reload()}
+        >
+          Voici ton lien personnel. Il te connecte sans mot de passe et ne
+          s&apos;affichera plus : copie-le maintenant. Quiconque a ce lien est
+          toi, ne le partage pas.
+        </PersonalLinkCard>
+      </div>
     )
   }
   if (!canCreate) return children
