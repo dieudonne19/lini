@@ -12,6 +12,17 @@ function createClient() {
   return new PrismaClient({ adapter: new PrismaNeon({ connectionString }) })
 }
 
-export const db = globalForPrisma.prisma ?? createClient()
+function getClient() {
+  const client = globalForPrisma.prisma ?? createClient()
+  if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = client
+  return client
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db
+// Created on first use, not on import: `next build` imports every route without a database URL.
+export const db = new Proxy({} as PrismaClient, {
+  get(_target, property) {
+    const client = getClient()
+    const value = Reflect.get(client, property)
+    return typeof value === "function" ? value.bind(client) : value
+  },
+})
