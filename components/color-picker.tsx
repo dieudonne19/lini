@@ -1,4 +1,5 @@
 import { FieldError } from "@/components/ui/field-error"
+import { readableTextColor } from "@/lib/colors"
 import { MEMBER_COLORS } from "@/lib/schemas"
 
 type ColorPickerProps = {
@@ -9,7 +10,7 @@ type ColorPickerProps = {
 }
 
 // Radio group of swatches. The color name is the accessible name; a check mark shows the selection,
-// so color is never the only signal.
+// so color is never the only signal. The thin border keeps the dark colors visible on a dark background.
 function ColorPicker({ legend, name, defaultValue, errors }: ColorPickerProps) {
   const errorId = `${name}-error`
   return (
@@ -29,8 +30,11 @@ function ColorPicker({ legend, name, defaultValue, errors }: ColorPickerProps) {
             <span className="sr-only">{label}</span>
             <span
               aria-hidden
-              style={{ backgroundColor: value }}
-              className="flex size-11 items-center justify-center rounded-full text-lg font-semibold text-white ring-offset-2 ring-offset-background peer-checked:ring-2 peer-checked:ring-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-checked:after:content-['✓']"
+              style={{
+                backgroundColor: value,
+                color: readableTextColor(value),
+              }}
+              className="flex size-11 items-center justify-center rounded-full border border-foreground/20 text-lg font-semibold ring-offset-2 ring-offset-background peer-checked:ring-2 peer-checked:ring-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-checked:after:content-['✓']"
             />
           </label>
         ))}

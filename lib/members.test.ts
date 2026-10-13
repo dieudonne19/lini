@@ -12,7 +12,7 @@ import {
 import { memberSchema } from "@/lib/schemas"
 
 describe("memberSchema phone", () => {
-  const base = { name: "Lina", color: "#2563eb", role: "child" }
+  const base = { name: "Lina", color: "#3D6DF2", role: "child" }
 
   it("accepts an international number with separators and normalizes it", () => {
     expect(
@@ -39,7 +39,7 @@ describe.skipIf(!process.env.DATABASE_URL)("members", () => {
     familyIds.push(family.id)
     const input = {
       name: "Lina",
-      color: "#2563eb",
+      color: "#3D6DF2",
       role: "child" as const,
       phone: "+261341234567",
     }
@@ -63,7 +63,7 @@ describe.skipIf(!process.env.DATABASE_URL)("members", () => {
     familyIds.push(family.id)
     const token = await createMember(family.id, {
       name: "Zoé",
-      color: "#16a34a",
+      color: "#2FB67C",
       role: "child",
       phone: null,
     })
@@ -112,7 +112,7 @@ describe.skipIf(!process.env.DATABASE_URL)("members", () => {
   async function setupManaged() {
     const family = await db.family.create({ data: { name: "Test" } })
     familyIds.push(family.id)
-    const input = { color: "#2563eb", phone: null }
+    const input = { color: "#3D6DF2", phone: null }
     const parentToken = await createMember(family.id, {
       ...input,
       name: "Papa",

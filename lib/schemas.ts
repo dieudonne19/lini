@@ -1,15 +1,16 @@
 import { z } from "zod"
 
 // Fixed palette: a member's color is never free text. The label is the accessible name of the swatch.
+// The first four are the dots of the Lini logo, then its navy, then colors that go with them.
 export const MEMBER_COLORS = [
-  { value: "#2563eb", label: "Bleu" },
-  { value: "#dc2626", label: "Rouge" },
-  { value: "#16a34a", label: "Vert" },
-  { value: "#d97706", label: "Orange" },
-  { value: "#9333ea", label: "Violet" },
-  { value: "#0891b2", label: "Turquoise" },
-  { value: "#db2777", label: "Rose" },
-  { value: "#4b5563", label: "Gris" },
+  { value: "#3D6DF2", label: "Bleu" },
+  { value: "#F2A93B", label: "Orange" },
+  { value: "#2FB67C", label: "Vert" },
+  { value: "#B65CF0", label: "Violet" },
+  { value: "#1F2540", label: "Marine" },
+  { value: "#1B9AAA", label: "Turquoise" },
+  { value: "#E5484D", label: "Rouge" },
+  { value: "#E0568F", label: "Rose" },
 ] as const
 
 const name = z

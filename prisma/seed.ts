@@ -22,10 +22,10 @@ async function main() {
   const family = await db.family.create({ data: { name: FAMILY_NAME } })
 
   const people = [
-    { key: "nirina", name: "Nirina", color: "#0f766e", role: "parent", phone: null },
-    { key: "hery", name: "Hery", color: "#b45309", role: "parent", phone: null },
-    { key: "lova", name: "Lova", color: "#7c3aed", role: "child", phone: "+261340000000" },
-    { key: "mamy", name: "Mamy", color: "#be123c", role: "child", phone: null },
+    { key: "nirina", name: "Nirina", color: "#1B9AAA", role: "parent", phone: null },
+    { key: "hery", name: "Hery", color: "#F2A93B", role: "parent", phone: null },
+    { key: "lova", name: "Lova", color: "#B65CF0", role: "child", phone: "+261340000000" },
+    { key: "mamy", name: "Mamy", color: "#E5484D", role: "child", phone: null },
   ] as const
 
   const tokens: Record<string, string> = {}

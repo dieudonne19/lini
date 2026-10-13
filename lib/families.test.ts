@@ -22,10 +22,10 @@ describe.skipIf(!process.env.DATABASE_URL)("createFamilyWithParent", () => {
   it("creates a family whose only member is a parent reachable by the returned token", async () => {
     const familyName = `Test ${crypto.randomUUID()}`
     familyNames.push(familyName)
-    const token = await createFamilyWithParent({ familyName, name: "Lina", color: "#2563eb" })
+    const token = await createFamilyWithParent({ familyName, name: "Lina", color: "#3D6DF2" })
 
     const member = await memberFromToken(token)
-    expect(member).toMatchObject({ name: "Lina", role: "parent", color: "#2563eb" })
+    expect(member).toMatchObject({ name: "Lina", role: "parent", color: "#3D6DF2" })
     const family = await db.family.findUniqueOrThrow({ where: { id: member!.familyId }, include: { members: true } })
     expect(family.name).toBe(familyName)
     expect(family.members).toHaveLength(1)
