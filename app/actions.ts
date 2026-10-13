@@ -1,8 +1,9 @@
 "use server"
 
+import { redirect } from "next/navigation"
 import { z } from "zod"
 
-import { setSession } from "@/app/session"
+import { clearSession, setSession } from "@/app/session"
 import { createFamilyWithParent, hasFamily } from "@/lib/families"
 import type { FormState } from "@/lib/form-state"
 import { familySchema } from "@/lib/schemas"
@@ -28,4 +29,10 @@ export async function createFamily(_prev: CreateFamilyState, formData: FormData)
   const token = await createFamilyWithParent(parsed.data)
   await setSession(token)
   return { token }
+}
+
+// Only removes the cookie: the personal link keeps working.
+export async function logout() {
+  await clearSession()
+  redirect("/")
 }
