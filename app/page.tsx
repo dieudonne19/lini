@@ -1,19 +1,17 @@
-import { Button } from "@/components/ui/button"
+import { getSessionMember } from "@/app/session"
+import { FirstRun } from "@/components/first-run"
+import { Home } from "@/components/home"
+import { LinkRequired } from "@/components/link-required"
+import { hasFamily } from "@/lib/families"
 
-export default function Page() {
+// Reads data and picks what to show; the screens themselves are presentational.
+export default async function Page() {
+  const member = await getSessionMember()
+  const canCreate = !member && !(await hasFamily())
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
+    <main className="mx-auto flex min-h-svh w-full max-w-md flex-col justify-center px-4 py-12">
+      <FirstRun canCreate={canCreate}>{member ? <Home name={member.name} /> : <LinkRequired />}</FirstRun>
+    </main>
   )
 }
