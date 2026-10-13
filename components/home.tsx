@@ -17,10 +17,20 @@ function Home({ name, canManageFamily, logoutAction }: HomeProps) {
         </h1>
         <p className="text-muted-foreground">Ton agenda arrive bientôt.</p>
       </div>
+      <Link
+        href="/agenda"
+        className={buttonVariants({ size: "lg", className: "h-11" })}
+      >
+        Mon agenda
+      </Link>
       {canManageFamily && (
         <Link
           href="/famille"
-          className={buttonVariants({ size: "lg", className: "h-11" })}
+          className={buttonVariants({
+            variant: "outline",
+            size: "lg",
+            className: "h-11",
+          })}
         >
           Gérer la famille
         </Link>
