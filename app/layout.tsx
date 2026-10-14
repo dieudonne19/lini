@@ -4,6 +4,7 @@ import { Bricolage_Grotesque, Figtree } from "next/font/google"
 import { logout } from "@/app/actions"
 import { getSessionMember } from "@/app/session"
 import { AppNavContainer } from "@/components/app-nav-container"
+import { HideOnLanding } from "@/components/hide-on-landing"
 import { Logo } from "@/components/logo"
 import { UserMenu } from "@/components/user-menu"
 import "./globals.css"
@@ -69,25 +70,27 @@ export default async function RootLayout({
       )}
     >
       <body className="flex min-h-svh flex-col">
-        <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
-          <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-x-6 px-4 py-1.5">
-            <Logo />
-            {member && (
-              <>
-                <AppNavContainer
-                  canManageFamily={member.role === "parent"}
-                  className="order-last w-full sm:order-none sm:w-auto"
-                />
-                <UserMenu
-                  name={member.name}
-                  color={member.color}
-                  role={member.role}
-                  logoutAction={logout}
-                />
-              </>
-            )}
-          </div>
-        </header>
+        <HideOnLanding when={!member}>
+          <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+            <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-x-6 px-4 py-1.5">
+              <Logo />
+              {member && (
+                <>
+                  <AppNavContainer
+                    canManageFamily={member.role === "parent"}
+                    className="order-last w-full sm:order-none sm:w-auto"
+                  />
+                  <UserMenu
+                    name={member.name}
+                    color={member.color}
+                    role={member.role}
+                    logoutAction={logout}
+                  />
+                </>
+              )}
+            </div>
+          </header>
+        </HideOnLanding>
         {children}
       </body>
     </html>

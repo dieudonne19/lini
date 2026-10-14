@@ -11,6 +11,7 @@ import {
   parseWeekParam,
   weekWindow,
 } from "@/lib/calendar-params"
+import { LandingPage, SITE_DESCRIPTION, SITE_TITLE } from "@/features/landing"
 import { listFamilySchedule } from "@/lib/schedule"
 
 type Member = NonNullable<Awaited<ReturnType<typeof getSessionMember>>>
@@ -37,21 +38,38 @@ async function CalendarData({
   return <WeekView schedule={schedule} monday={monday} />
 }
 
-// A member sees the week; a visitor gets the default title of the site. The layout's title template does not
-// apply to the page of its own segment, so the suffix is written out.
+// A member sees the week; a visitor sees the landing page and gets its title and description. The layout's title
+// template does not apply to the page of its own segment, so the suffix is written out. The openGraph and twitter
+// of a page replace the layout's whole objects, so they are written out again.
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSessionMember()) ? { title: "Semaine · Lini" } : {}
+  if (await getSessionMember()) return { title: "Semaine · Lini" }
+  return {
+    title: { absolute: SITE_TITLE },
+    description: SITE_DESCRIPTION,
+    openGraph: {
+      type: "website",
+      siteName: "Lini",
+      locale: "fr_FR",
+      title: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+    },
+  }
 }
 
-// A signed-in member lands on the week of the family. A visitor without a session gets the landing page,
-// which is empty for now: the way in (create the family, open a personal link) lives at /commencer.
+// A signed-in member lands on the week of the family. A visitor without a session gets the landing page; its
+// button leads to /commencer, the way in (create the family, or open a personal link).
 export default async function Page({
   searchParams,
 }: {
   searchParams: Promise<{ du?: string; mois?: string }>
 }) {
   const member = await getSessionMember()
-  if (!member) return <main className="flex-1" />
+  if (!member) return <LandingPage />
 
   const { du, mois } = await searchParams
   const month = parseMonthParam(mois)
