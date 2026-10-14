@@ -21,7 +21,7 @@ export function EditEventPanel({ event }: { event: EventToEdit }) {
   const isClient = useIsClient()
   if (!isClient)
     return (
-      <div aria-hidden className="h-96 animate-pulse rounded-xl bg-muted" />
+      <div aria-hidden className="h-96 animate-pulse rounded-lg bg-muted" />
     )
   return (
     <EventEditor

@@ -15,7 +15,7 @@ function MonthEventList({ events }: { events: ScheduleEvent[] }) {
           <li key={event.id}>
             <Link
               href={`/evenements/${event.id}`}
-              className="block rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground hover:opacity-90"
+              className="block rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground hover:opacity-90"
             >
               <span className="block font-semibold break-words">
                 {event.title}

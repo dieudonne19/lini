@@ -18,14 +18,14 @@ function CreateFamilyForm({ action, pending, state }: CreateFamilyFormProps) {
   return (
     <form action={action} className="flex flex-col gap-6" noValidate>
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Bienvenue sur Lini</h1>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Bienvenue sur Lini</h1>
         <p className="text-muted-foreground">
           Qui fait quoi, et quand êtes-vous tous libres ? Commence par créer ta famille.
         </p>
       </div>
 
       {message && (
-        <p role="alert" className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive">
+        <p role="alert" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
           {message}
         </p>
       )}

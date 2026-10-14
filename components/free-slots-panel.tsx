@@ -48,7 +48,7 @@ function FreeSlotsPanel({
       className="flex flex-col gap-3"
     >
       <CollapsibleTrigger
-        className={`group ${buttonVariants({ variant: "outline", className: "h-11 w-full justify-between" })}`}
+        className={`group ${buttonVariants({ variant: "outline", className: "h-11 w-full justify-between border-input" })}`}
       >
         Trouver un créneau où tout le monde est libre
         <ChevronDown

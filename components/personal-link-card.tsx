@@ -28,7 +28,7 @@ function PersonalLinkCard({
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <Heading className="text-2xl font-semibold tracking-tight">
+        <Heading className="text-3xl font-semibold tracking-tight sm:text-4xl">
           {title}
         </Heading>
         <p className="text-muted-foreground">{children}</p>

@@ -12,7 +12,7 @@ export default async function Page() {
 
   const { proposals, upcoming, past } = await listEvents(member)
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-8">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-10 *:max-w-2xl">
       <EventsView
         proposals={proposals}
         upcoming={upcoming}

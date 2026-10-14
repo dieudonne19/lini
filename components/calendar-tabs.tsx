@@ -1,36 +1,43 @@
 import Link from "next/link"
 
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 type CalendarTabsProps = {
   current: "week" | "month"
   weekHref: string
   monthHref: string
 }
 
-const tabClass = (active: boolean) =>
-  `inline-flex h-11 items-center rounded-lg px-4 text-sm font-medium ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`
+const triggerClass =
+  "h-9 px-4 data-active:bg-primary data-active:font-semibold data-active:text-primary-foreground"
 
-// Pure: switches between the week and the month. They are links (each view has its own address).
+// Pure: switches between the week and the month. Each tab is a link (each view has its own address), so the
+// selected tab simply follows the page that is shown.
 function CalendarTabs({ current, weekHref, monthHref }: CalendarTabsProps) {
   return (
-    <nav
-      aria-label="Vue du calendrier"
-      className="flex w-fit gap-1 rounded-xl border border-border p-1"
-    >
-      <Link
-        href={weekHref}
-        aria-current={current === "week" ? "page" : undefined}
-        className={tabClass(current === "week")}
+    <Tabs value={current}>
+      <TabsList
+        aria-label="Vue du calendrier"
+        className="group-data-horizontal/tabs:h-11"
       >
-        Semaine
-      </Link>
-      <Link
-        href={monthHref}
-        aria-current={current === "month" ? "page" : undefined}
-        className={tabClass(current === "month")}
-      >
-        Mois
-      </Link>
-    </nav>
+        <TabsTrigger
+          value="week"
+          nativeButton={false}
+          render={<Link href={weekHref} />}
+          className={triggerClass}
+        >
+          Semaine
+        </TabsTrigger>
+        <TabsTrigger
+          value="month"
+          nativeButton={false}
+          render={<Link href={monthHref} />}
+          className={triggerClass}
+        >
+          Mois
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
   )
 }
 

@@ -7,14 +7,19 @@ type WeekItemProps = {
 }
 
 // Pure: one occurrence in the week. Another member's private activity is "Occupé": it was never given a title.
-// The member's color is a left border; the member is always named by the row or the list around it.
+// The member's color is a left border and a light tint; the member is always named by the row or the list around it.
 function WeekItem({ item, color }: WeekItemProps) {
   const { activity } = item
   const isBusy = activity.kind === "busy"
   return (
     <div
-      style={{ borderLeftColor: color }}
-      className={`rounded-md border-l-4 px-2 py-1 text-xs ${isBusy ? "bg-muted text-muted-foreground" : "bg-secondary"}`}
+      style={{
+        borderLeftColor: color,
+        backgroundColor: isBusy
+          ? undefined
+          : `color-mix(in oklab, ${color} 16%, var(--card))`,
+      }}
+      className={`rounded-lg border-l-4 px-2 py-1.5 text-xs ${isBusy ? "bg-muted text-muted-foreground" : ""}`}
     >
       <p className="text-muted-foreground tabular-nums">
         {formatTimeRange(item)}

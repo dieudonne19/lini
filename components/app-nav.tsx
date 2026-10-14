@@ -1,18 +1,18 @@
 import Link from "next/link"
 
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 type AppNavProps = {
   currentPath: string
   canManageFamily: boolean
-  logoutAction: () => void
+  className?: string
 }
 
 const linkClass =
-  "inline-flex min-h-11 items-center rounded-md px-3 text-sm underline-offset-4 hover:underline"
+  "inline-flex min-h-11 shrink-0 items-center rounded-lg px-2 text-sm sm:px-3 transition-colors hover:bg-muted"
 
-// Pure: the main links of a signed-in member. The current page is marked for screen readers and in bold.
-function AppNav({ currentPath, canManageFamily, logoutAction }: AppNavProps) {
+// Pure: the main links of a signed-in member. The current page is marked for screen readers and by a tint.
+function AppNav({ currentPath, canManageFamily, className }: AppNavProps) {
   const links = [
     { href: "/", label: "Semaine" },
     { href: "/agenda", label: "Mon agenda" },
@@ -25,27 +25,26 @@ function AppNav({ currentPath, canManageFamily, logoutAction }: AppNavProps) {
   return (
     <nav
       aria-label="Navigation principale"
-      className="flex flex-wrap items-center gap-x-1"
+      className={cn(
+        "flex [scrollbar-width:none] items-center gap-0.5 overflow-x-auto sm:gap-1",
+        className
+      )}
     >
       {links.map(({ href, label }) => (
         <Link
           key={href}
           href={href}
           aria-current={isCurrent(href) ? "page" : undefined}
-          className={`${linkClass} ${isCurrent(href) ? "font-bold" : "font-medium text-muted-foreground"}`}
+          className={cn(
+            linkClass,
+            isCurrent(href)
+              ? "bg-accent font-semibold"
+              : "font-medium text-muted-foreground hover:text-foreground"
+          )}
         >
           {label}
         </Link>
       ))}
-      <form action={logoutAction}>
-        <Button
-          type="submit"
-          variant="ghost"
-          className="h-11 font-medium text-muted-foreground"
-        >
-          Se déconnecter
-        </Button>
-      </form>
     </nav>
   )
 }

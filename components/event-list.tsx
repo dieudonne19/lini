@@ -12,7 +12,7 @@ type EventListProps = {
   renderActions?: (event: EventSummary) => React.ReactNode
 }
 
-// Pure: a titled list of events, each one a link to its page.
+// Pure: a titled list of events, each card a link to its page (the buttons inside stay above the link).
 function EventList({
   title,
   events,
@@ -22,7 +22,7 @@ function EventList({
 }: EventListProps) {
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-lg font-semibold">{title}</h2>
+      <h2 className="text-xl font-semibold">{title}</h2>
       {events.length === 0 ? (
         <p className="text-muted-foreground">{emptyText}</p>
       ) : (
@@ -30,22 +30,26 @@ function EventList({
           {events.map((event) => (
             <li
               key={event.id}
-              className="flex flex-col gap-2 rounded-xl border border-border p-3"
+              className="group relative flex flex-col gap-3 rounded-lg bg-card p-4 shadow-sm ring-1 ring-foreground/5 transition-shadow hover:shadow-md"
             >
               <div>
                 <Link
                   href={`/evenements/${event.id}`}
-                  className="font-medium break-words underline-offset-4 hover:underline"
+                  className="font-heading text-lg font-semibold break-words underline-offset-4 group-hover:underline after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
                 >
                   {event.title}
                 </Link>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground">
                   {formatEventWhen(event)}
                   {event.place ? ` · ${event.place}` : ""}
                 </p>
-                {note?.(event) && <p className="text-sm">{note(event)}</p>}
+                {note?.(event) && (
+                  <p className="mt-1 text-sm font-medium">{note(event)}</p>
+                )}
               </div>
-              {renderActions?.(event)}
+              {renderActions && (
+                <div className="relative">{renderActions(event)}</div>
+              )}
             </li>
           ))}
         </ul>

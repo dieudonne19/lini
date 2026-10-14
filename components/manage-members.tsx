@@ -36,7 +36,7 @@ export function ManageMembers({
       {state?.message && (
         <p
           role="alert"
-          className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive"
+          className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive"
         >
           {state.message}
         </p>

@@ -20,9 +20,9 @@ export default async function Page({
   const { title, startsAt, endsAt, allDay, isPrivate, repeat, repeatUntil } =
     activity
   return (
-    <main className="mx-auto flex flex-1 w-full max-w-md flex-col gap-8 px-4 py-12">
+    <main className="mx-auto flex flex-1 w-full max-w-5xl flex-col gap-8 px-4 py-10 *:max-w-md">
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Modifier l&apos;activité
         </h1>
         {repeat !== "none" && (

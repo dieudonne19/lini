@@ -1,24 +1,34 @@
 import { FieldError } from "@/components/ui/field-error"
-import { cn } from "@/lib/utils"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
-type SelectFieldProps = Omit<
-  React.ComponentProps<"select">,
-  "id" | "aria-describedby"
-> & {
+type SelectFieldProps = {
   id: string
+  // Sent with the form (the select keeps a hidden field with this name).
+  name: string
   label: string
   options: readonly { value: string; label: string }[]
+  value?: string
+  defaultValue?: string
+  onValueChange?: (value: string) => void
   errors?: string[]
 }
 
-// Native select with a visible label and a linked error message.
+// shadcn Select with a visible label and a linked error message.
 function SelectField({
   id,
+  name,
   label,
   options,
+  value,
+  defaultValue,
+  onValueChange,
   errors,
-  className,
-  ...selectProps
 }: SelectFieldProps) {
   const errorId = `${id}-error`
   const hasError = !!errors?.length
@@ -27,22 +37,33 @@ function SelectField({
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium">
         {label}
       </label>
-      <select
-        id={id}
-        aria-invalid={hasError || undefined}
-        aria-describedby={hasError ? errorId : undefined}
-        className={cn(
-          "h-11 w-full rounded-xl border border-border bg-background px-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 aria-invalid:border-destructive",
-          className
-        )}
-        {...selectProps}
+      <Select
+        name={name}
+        items={options}
+        value={value}
+        defaultValue={defaultValue}
+        onValueChange={(next) => next && onValueChange?.(next)}
       >
-        {options.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
+        <SelectTrigger
+          id={id}
+          aria-invalid={hasError || undefined}
+          aria-describedby={hasError ? errorId : undefined}
+          className="w-full border-input bg-card text-base data-[size=default]:h-11"
+        >
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent alignItemWithTrigger={false}>
+          {options.map((option) => (
+            <SelectItem
+              key={option.value}
+              value={option.value}
+              className="min-h-10 text-base"
+            >
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       <FieldError id={errorId} errors={errors} />
     </div>
   )

@@ -27,7 +27,7 @@ export function EditActivityPanel({ activity }: { activity: AgendaActivity }) {
 
   if (!isClient)
     return (
-      <div aria-hidden className="h-96 animate-pulse rounded-xl bg-muted" />
+      <div aria-hidden className="h-96 animate-pulse rounded-lg bg-muted" />
     )
   return (
     <div className="flex flex-col gap-8">

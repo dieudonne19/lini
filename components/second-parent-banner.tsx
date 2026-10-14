@@ -3,7 +3,7 @@ function SecondParentBanner() {
   return (
     <div
       role="note"
-      className="rounded-xl border border-border bg-muted p-3 text-sm"
+      className="rounded-lg border border-border bg-muted p-3 text-sm"
     >
       <p className="font-medium">Ajoute un deuxième parent</p>
       <p className="text-muted-foreground">

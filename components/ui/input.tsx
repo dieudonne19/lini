@@ -6,7 +6,7 @@ function Input({ className, invalid, ...props }: React.ComponentProps<"input"> &
     <input
       aria-invalid={invalid || undefined}
       className={cn(
-        "h-11 w-full rounded-xl border border-border bg-background px-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 aria-invalid:border-destructive",
+        "h-11 w-full rounded-lg border border-input bg-card px-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 aria-invalid:border-destructive",
         className
       )}
       {...props}

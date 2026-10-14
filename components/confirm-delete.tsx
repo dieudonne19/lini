@@ -29,7 +29,7 @@ function ConfirmDelete({
       </summary>
       <form
         action={action}
-        className="mt-2 flex flex-col gap-3 rounded-xl bg-destructive/10 p-3"
+        className="mt-2 flex flex-col gap-3 rounded-lg bg-destructive/10 p-3"
       >
         {message && (
           <p role="alert" className="text-sm font-medium text-destructive">

@@ -17,7 +17,7 @@ function CheckboxField({ id, label, hint, ...inputProps }: CheckboxFieldProps) {
           id={id}
           type="checkbox"
           aria-describedby={hint ? hintId : undefined}
-          className="size-5"
+          className="size-5 accent-primary"
           {...inputProps}
         />
         <span className="font-medium">{label}</span>

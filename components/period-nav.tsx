@@ -30,7 +30,7 @@ function PeriodNav({
 }: PeriodNavProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <h1 className="text-2xl font-semibold tracking-tight">{label}</h1>
+      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{label}</h1>
       <nav aria-label="Changer de période" className="flex items-center gap-2">
         <Link
           href={previousHref}

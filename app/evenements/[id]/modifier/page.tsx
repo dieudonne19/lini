@@ -22,8 +22,8 @@ export default async function Page({
 
   const { title, place, description, startsAt, endsAt, allDay } = event
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-8 px-4 py-12">
-      <h1 className="text-2xl font-semibold tracking-tight">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-10 *:max-w-md">
+      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
         Modifier l&apos;événement
       </h1>
       <EditEventPanel

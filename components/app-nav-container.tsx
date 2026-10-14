@@ -7,7 +7,7 @@ import { AppNav } from "@/components/app-nav"
 // Container: gives the pure navigation the current path.
 export function AppNavContainer(props: {
   canManageFamily: boolean
-  logoutAction: () => void
+  className?: string
 }) {
   return <AppNav currentPath={usePathname()} {...props} />
 }

@@ -60,7 +60,7 @@ function MemberActions({
               <summary className="inline-flex h-11 cursor-pointer items-center text-sm font-medium text-destructive underline-offset-4 hover:underline">
                 Retirer de la famille
               </summary>
-              <div className="mt-2 flex flex-col gap-3 rounded-xl bg-destructive/10 p-3">
+              <div className="mt-2 flex flex-col gap-3 rounded-lg bg-destructive/10 p-3">
                 <p className="text-sm">
                   Retirer {member.name} supprime ses activités, ses propositions
                   et ses réponses. Son lien ne fonctionnera plus.

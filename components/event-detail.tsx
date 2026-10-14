@@ -49,14 +49,14 @@ function EventDetail({
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-2">
         {isProposal && (
-          <p className="w-fit rounded-md bg-muted px-2 py-1 text-sm font-medium">
+          <p className="w-fit rounded-full bg-warning px-3 py-1 text-sm font-semibold text-warning-foreground">
             Proposition en attente de validation
           </p>
         )}
-        <h1 className="text-2xl font-semibold tracking-tight break-words">
+        <h1 className="text-3xl font-semibold tracking-tight break-words sm:text-4xl">
           {event.title}
         </h1>
-        <p>{formatEventWhen(event)}</p>
+        <p className="text-lg font-medium">{formatEventWhen(event)}</p>
         {event.place && <p className="text-muted-foreground">{event.place}</p>}
         {isProposal && (
           <p className="text-muted-foreground">
@@ -68,7 +68,7 @@ function EventDetail({
       {message && (
         <p
           role="alert"
-          className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive"
+          className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive"
         >
           {message}
         </p>
@@ -92,7 +92,7 @@ function EventDetail({
 
       {can.review && (
         <section className="flex flex-col gap-3">
-          <h2 className="text-lg font-semibold">Ta décision</h2>
+          <h2 className="text-xl font-semibold">Ta décision</h2>
           {conflicts}
           <ProposalActions
             eventId={event.id}
@@ -104,7 +104,7 @@ function EventDetail({
 
       {!isProposal && (
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg font-semibold">Qui vient ?</h2>
+          <h2 className="text-xl font-semibold">Qui vient ?</h2>
           {can.answer ? (
             <AnswerButtons
               current={event.myAnswer}

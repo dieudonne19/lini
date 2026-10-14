@@ -37,7 +37,7 @@ export function EventsView({
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">Événements</h1>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Événements</h1>
         <Link
           href="/evenements/nouveau"
           className={buttonVariants({ className: "h-11" })}
@@ -49,7 +49,7 @@ export function EventsView({
       {reviewState?.message && (
         <p
           role="alert"
-          className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive"
+          className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive"
         >
           {reviewState.message}
         </p>

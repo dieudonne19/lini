@@ -46,7 +46,7 @@ function ActivityForm({
       {message && (
         <p
           role="alert"
-          className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive"
+          className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive"
         >
           {message}
         </p>
@@ -112,7 +112,7 @@ function ActivityForm({
         label="Répétition"
         options={REPEAT_OPTIONS}
         value={repeat}
-        onChange={(e) => setRepeat(e.target.value)}
+        onValueChange={setRepeat}
         errors={errors?.repeat}
       />
       {repeat !== "none" && (

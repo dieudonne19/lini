@@ -21,7 +21,7 @@ function AddMemberForm({ action, pending, state }: AddMemberFormProps) {
       {message && (
         <p
           role="alert"
-          className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive"
+          className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive"
         >
           {message}
         </p>

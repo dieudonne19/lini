@@ -28,7 +28,9 @@ function ConflictNotice({
       )}
       {status === "error" && (
         <Alert variant="destructive" role="alert">
-          <AlertTitle>Impossible de vérifier les agendas</AlertTitle>
+          <AlertTitle className="text-base font-semibold">
+            Impossible de vérifier les agendas
+          </AlertTitle>
           <AlertDescription className="flex flex-col items-start gap-2">
             {continueText}
             {onRetry && (
@@ -47,14 +49,16 @@ function ConflictNotice({
       )}
       {status === "ready" && conflicts.length === 0 && (
         <Alert role="status">
-          <AlertTitle>
+          <AlertTitle className="text-base font-semibold">
             Personne n&apos;a d&apos;activité à ce moment-là
           </AlertTitle>
         </Alert>
       )}
       {status === "ready" && conflicts.length > 0 && (
         <Alert role="status">
-          <AlertTitle>Occupés à ce moment-là</AlertTitle>
+          <AlertTitle className="text-base font-semibold">
+            Occupés à ce moment-là
+          </AlertTitle>
           <AlertDescription className="flex flex-col gap-3">
             <ul className="flex flex-wrap gap-x-4 gap-y-2">
               {conflicts.map((member) => (
