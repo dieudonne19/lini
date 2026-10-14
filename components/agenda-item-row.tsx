@@ -1,52 +1,98 @@
-import { Lock, Repeat } from "lucide-react"
+import { ChevronRight, Lock, Repeat, Sun } from "lucide-react"
 import Link from "next/link"
+import { useId, type CSSProperties } from "react"
 
 import type { AgendaItem } from "@/lib/agenda"
-import { formatRepeat, formatTimeRange } from "@/lib/format-date"
+import { formatRepeat, formatTime, formatTimeRange } from "@/lib/format-date"
+import { cn } from "@/lib/utils"
 
-const tagClass =
-  "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium [&_svg]:size-3.5"
+type AgendaItemRowProps = {
+  item: AgendaItem
+  // The signed-in member's color: the left border and the tint of the time block.
+  color: string
+  className?: string
+}
 
-// Pure: one occurrence, as a card. It speaks the same language as the week view: the member's color is a left
-// border and a light tint, and the cards share the event cards' relief and title font. The whole card opens the
-// activity ("Modifier" edits the whole series when it repeats). The owner sees the title even when it is private.
-function AgendaItemRow({ item, color }: { item: AgendaItem; color: string }) {
-  const { activity } = item
+// Pure: one occurrence, as a card that is a single link to the activity ("Modifier" edits the whole series when
+// it repeats). The time block is the same chip as the week view (4 px border + tint of the member's color); the
+// screen reader gets the time, the repetition and the status through a description. The owner sees the title
+// even when the activity is private.
+function AgendaItemRow({ item, color, className }: AgendaItemRowProps) {
+  const { activity, allDay, startsAt, endsAt } = item
+  const descriptionId = useId()
   const repeat = formatRepeat(activity)
+
   return (
-    <li
-      style={{
-        borderLeftColor: color,
-        backgroundColor: `color-mix(in oklab, ${color} 12%, var(--card))`,
-      }}
-      className="group relative flex flex-col gap-1 rounded-lg border-l-4 p-4 shadow-sm ring-1 ring-foreground/5 transition-shadow hover:shadow-md"
-    >
-      <p className="text-sm font-semibold tabular-nums">
-        {formatTimeRange(item)}
-      </p>
+    <li style={{ "--member": color } as CSSProperties}>
       <Link
         href={`/agenda/${activity.id}`}
         aria-label={`Modifier ${activity.title}`}
-        className="w-fit font-heading text-lg leading-snug font-semibold break-words group-hover:underline after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-3 focus-visible:after:ring-ring/50"
+        aria-describedby={descriptionId}
+        className={cn(
+          "group flex min-h-16 items-stretch overflow-hidden rounded-lg bg-card text-card-foreground",
+          "shadow-sm ring-1 ring-foreground/5 transition-shadow hover:shadow-md",
+          "active:bg-accent/40 active:shadow-sm",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          "motion-reduce:transition-none",
+          className
+        )}
       >
-        {activity.title}
+        <span
+          aria-hidden="true"
+          className="flex w-24 shrink-0 flex-col justify-center gap-1 border-l-4 border-l-(color:--member) bg-[color-mix(in_oklab,var(--member)_16%,white)] px-3 py-3 text-foreground"
+        >
+          {allDay ? (
+            <>
+              <Sun className="size-4" />
+              <span className="text-sm leading-tight font-semibold">
+                Journée entière
+              </span>
+            </>
+          ) : (
+            <span className="flex flex-col leading-tight tabular-nums">
+              <span className="font-heading text-base font-semibold">
+                {formatTime(startsAt)}
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {formatTime(endsAt)}
+              </span>
+            </span>
+          )}
+        </span>
+
+        <span className="flex min-w-0 flex-1 flex-col justify-center gap-2 py-3 pr-2 pl-4">
+          <span className="font-heading text-lg leading-snug font-semibold text-pretty wrap-anywhere text-foreground">
+            {activity.title}
+          </span>
+          {(activity.isPrivate || repeat) && (
+            <span aria-hidden="true" className="flex flex-wrap gap-1.5">
+              {activity.isPrivate && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-0.5 text-xs leading-snug font-medium text-foreground">
+                  <Lock className="size-3.5" />
+                  Privée
+                </span>
+              )}
+              {repeat && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs leading-snug font-medium text-muted-foreground">
+                  <Repeat className="size-3.5 shrink-0" />
+                  {repeat}
+                </span>
+              )}
+            </span>
+          )}
+        </span>
+
+        <ChevronRight
+          aria-hidden="true"
+          className="my-auto mr-3 size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground motion-reduce:transition-none"
+        />
       </Link>
-      {(activity.isPrivate || repeat) && (
-        <ul className="mt-1 flex flex-wrap gap-1.5">
-          {activity.isPrivate && (
-            <li className={`${tagClass} bg-secondary`}>
-              <Lock aria-hidden />
-              Privée
-            </li>
-          )}
-          {repeat && (
-            <li className={`${tagClass} bg-card text-muted-foreground`}>
-              <Repeat aria-hidden />
-              {repeat}
-            </li>
-          )}
-        </ul>
-      )}
+
+      <span id={descriptionId} hidden>
+        {formatTimeRange(item)}
+        {repeat ? `. ${repeat}` : ""}
+        {activity.isPrivate ? ". Privée" : ""}
+      </span>
     </li>
   )
 }
