@@ -29,6 +29,11 @@ export function formatDayHeading(day: Date, today: Date) {
   return capitalize(text)
 }
 
+// "18:00" in the device timezone.
+export function formatTime(date: Date) {
+  return formatDate({ hour: "2-digit", minute: "2-digit" }, date)
+}
+
 // "18:00 – 19:00" in the device timezone, or "Journée entière".
 export function formatTimeRange({
   startsAt,
@@ -36,9 +41,7 @@ export function formatTimeRange({
   allDay,
 }: Pick<AgendaItem, "startsAt" | "endsAt" | "allDay">) {
   if (allDay) return "Journée entière"
-  const time = (date: Date) =>
-    formatDate({ hour: "2-digit", minute: "2-digit" }, date)
-  return `${time(startsAt)} – ${time(endsAt)}`
+  return `${formatTime(startsAt)} – ${formatTime(endsAt)}`
 }
 
 // "Chaque semaine jusqu'au 31 décembre", or null for a one-off activity.

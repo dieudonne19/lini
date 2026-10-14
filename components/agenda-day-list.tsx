@@ -8,10 +8,10 @@ function AgendaDayList({ days, today }: { days: AgendaDay[]; today: Date }) {
     <div className="flex flex-col gap-8">
       {days.map((day) => (
         <section key={day.date.getTime()}>
-          <h2 className="text-base font-semibold">
+          <h2 className="text-lg font-semibold">
             {formatDayHeading(day.date, today)}
           </h2>
-          <ul className="divide-y divide-border">
+          <ul className="mt-3 flex flex-col gap-3">
             {day.items.map((item) => (
               <AgendaItemRow
                 key={`${item.activity.id}-${item.startsAt.getTime()}`}
