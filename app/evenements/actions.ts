@@ -16,6 +16,7 @@ import {
   type EventResult,
 } from "@/lib/events"
 import type { ActionResult } from "@/lib/form-state"
+import { loadSchedule, type ScheduleResult } from "@/lib/schedule-request"
 
 const LINK_INVALID =
   "Ton lien ne fonctionne plus. Demande-en un nouveau à un parent."
@@ -127,4 +128,15 @@ export async function deleteEventAction(
   if (!result.ok) return toResult(result)
   refresh(eventId)
   redirect("/evenements")
+}
+
+// Read only: the family's schedule around a period (ISO instants), for the conflict preview and the free
+// slots. Same masking as everywhere: no title for another member's private activity.
+export async function loadScheduleAction(
+  from: string,
+  to: string
+): Promise<ScheduleResult> {
+  const member = await getSessionMember()
+  if (!member) return { ok: false, message: LINK_INVALID }
+  return loadSchedule(member, from, to)
 }
