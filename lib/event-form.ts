@@ -123,3 +123,20 @@ export function parseEventPayload(data: FormDataLike) {
     allDay: text(data, "allDay") === "true",
   })
 }
+
+// The dates and times part of the form: what the conflict preview and the free slots read and fill.
+export type WhenFields = Pick<
+  EventFields,
+  "startDate" | "endDate" | "startTime" | "endTime" | "allDay"
+>
+
+// The event's instants as the server would store them, or null while the dates are incomplete or not valid
+// (the same rules as the server: end after start, 31 days at most...).
+export function eventTimesFromFields(when: WhenFields) {
+  const parsed = parseEventPayload(
+    toEventPayload({ title: "x", place: "", description: "", ...when })
+  )
+  if (!parsed.success) return null
+  const { startsAt, endsAt, allDay } = parsed.data
+  return { startsAt, endsAt, allDay }
+}

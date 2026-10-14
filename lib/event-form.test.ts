@@ -1,6 +1,7 @@
 import { afterAll, describe, expect, it } from "vitest"
 
 import {
+  eventTimesFromFields,
   eventToFields,
   missingEventFieldErrors,
   parseEventPayload,
@@ -107,6 +108,59 @@ describe("missingEventFieldErrors", () => {
         fields({ allDay: true, startTime: "", endTime: "" })
       )
     ).toEqual({})
+  })
+})
+
+describe("eventTimesFromFields", () => {
+  const when = (overrides: Partial<EventFields> = {}) => {
+    const { startDate, endDate, startTime, endTime, allDay } = fields(overrides)
+    return { startDate, endDate, startTime, endTime, allDay }
+  }
+
+  it("gives the instants the server would store, in the device timezone", () => {
+    expect(eventTimesFromFields(when())).toEqual({
+      startsAt: new Date("2026-10-17T17:00:00.000Z"),
+      endsAt: new Date("2026-10-17T20:00:00.000Z"),
+      allDay: false,
+    })
+  })
+
+  it("gives the whole range of an all-day event, as UTC dates", () => {
+    expect(
+      eventTimesFromFields(
+        when({
+          allDay: true,
+          startTime: "",
+          endTime: "",
+          endDate: "2026-10-18",
+        })
+      )
+    ).toEqual({
+      startsAt: new Date("2026-10-17T00:00:00.000Z"),
+      endsAt: new Date("2026-10-18T00:00:00.000Z"),
+      allDay: true,
+    })
+  })
+
+  it("is null while a date or a time is missing", () => {
+    expect(eventTimesFromFields(when({ startDate: "" }))).toBeNull()
+    expect(eventTimesFromFields(when({ startTime: "" }))).toBeNull()
+    expect(eventTimesFromFields(when({ endTime: "" }))).toBeNull()
+  })
+
+  it("is null when the event is not valid: an end before the start, or more than 31 days", () => {
+    expect(eventTimesFromFields(when({ endDate: "2026-10-16" }))).toBeNull()
+    expect(eventTimesFromFields(when({ endDate: "2026-12-01" }))).toBeNull()
+    expect(
+      eventTimesFromFields(
+        when({
+          allDay: true,
+          startTime: "",
+          endTime: "",
+          endDate: "2026-10-10",
+        })
+      )
+    ).toBeNull()
   })
 })
 
