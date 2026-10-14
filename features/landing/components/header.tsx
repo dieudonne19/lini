@@ -9,32 +9,34 @@ const NAV_LINK =
 
 export function Header() {
   return (
-    <header className="mx-auto flex h-20 max-w-[1160px] items-center justify-between gap-4 px-4 md:px-6">
-      <Link href="/" aria-label="Lini, accueil">
-        <Logo className="h-9 w-auto" />
-      </Link>
-      <nav
-        aria-label="Navigation principale"
-        className="flex items-center gap-8"
-      >
-        <a className={NAV_LINK} href="#comment">
-          Comment ça marche
-        </a>
-        <a className={NAV_LINK} href="#questions">
-          Questions
-        </a>
-        {/* Caché sur mobile : le bouton principal du hero est déjà visible. cn() et non buttonVariants seul : seul cn
-            fait gagner `hidden` sur le `inline-flex` de base du bouton. */}
-        <Link
-          href={CTA_HREF}
-          className={cn(
-            buttonVariants(),
-            "hidden h-12 px-6 text-base font-semibold md:inline-flex"
-          )}
-        >
-          {CTA_LABEL}
+    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-[1160px] items-center justify-between gap-4 px-4 md:h-20 md:px-6">
+        <Link href="/" aria-label="Lini, accueil">
+          <Logo className="h-9 w-auto" />
         </Link>
-      </nav>
+        <nav
+          aria-label="Navigation principale"
+          className="flex items-center gap-8"
+        >
+          <a className={NAV_LINK} href="#comment">
+            Comment ça marche
+          </a>
+          <a className={NAV_LINK} href="#questions">
+            Questions
+          </a>
+          {/* Caché sur mobile : le bouton principal du hero est déjà visible. cn() et non buttonVariants seul : seul cn
+            fait gagner `hidden` sur le `inline-flex` de base du bouton. */}
+          <Link
+            href={CTA_HREF}
+            className={cn(
+              buttonVariants(),
+              "hidden h-12 px-6 text-base font-semibold md:inline-flex"
+            )}
+          >
+            {CTA_LABEL}
+          </Link>
+        </nav>
+      </div>
     </header>
   )
 }

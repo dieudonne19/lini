@@ -25,16 +25,34 @@ export function HugIllustration({ className }: { className?: string }) {
       aria-label="Quatre membres de la famille serrés les uns contre les autres, deux parents et deux enfants, avec des cœurs au-dessus d'eux."
     >
       <ellipse cx={240} cy={364} rx={210} ry={16} fill={GROUND} />
-      <Pieces items={DECOR} />
+      <Pieces items={DECOR} animate />
 
-      <Peg x={100} y={364} scale={0.8} color={M.green} skin={SKIN.warm} />
-      <Peg x={188} y={364} scale={1.3} color={M.blue} skin={SKIN.deep} />
-      <Peg x={296} y={364} scale={1.3} color={M.orange} skin={SKIN.light} />
-      <Peg x={386} y={364} scale={0.85} color={M.violet} skin={SKIN.brown} />
+      <g className="lini-squeeze" style={{ transformOrigin: "240px 364px" }}>
+        <g className="lini-lift">
+          <Peg x={100} y={364} scale={0.8} color={M.green} skin={SKIN.warm} />
+        </g>
+        <g className="lini-lift" style={{ animationDelay: "100ms" }}>
+          <Peg x={188} y={364} scale={1.3} color={M.blue} skin={SKIN.deep} />
+        </g>
+        <g className="lini-lift" style={{ animationDelay: "200ms" }}>
+          <Peg x={296} y={364} scale={1.3} color={M.orange} skin={SKIN.light} />
+        </g>
+        <g className="lini-lift" style={{ animationDelay: "300ms" }}>
+          <Peg
+            x={386}
+            y={364}
+            scale={0.85}
+            color={M.violet}
+            skin={SKIN.brown}
+          />
+        </g>
 
-      <Arm d="M214 330Q242 312 270 332" color={M.blue} width={9} />
-      <Arm d="M164 330Q138 316 112 336" color={M.blue} width={9} />
-      <Arm d="M322 330Q348 316 372 338" color={M.orange} width={9} />
+        <g className="lini-arms">
+          <Arm d="M214 330Q242 312 270 332" color={M.blue} width={9} />
+          <Arm d="M164 330Q138 316 112 336" color={M.blue} width={9} />
+          <Arm d="M322 330Q348 316 372 338" color={M.orange} width={9} />
+        </g>
+      </g>
     </svg>
   )
 }

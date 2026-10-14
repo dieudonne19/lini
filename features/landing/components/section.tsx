@@ -24,7 +24,7 @@ export function Section({
       id={id}
       aria-labelledby={labelledBy}
       className={cn(
-        "scroll-mt-4 py-18 md:py-28",
+        "scroll-mt-20 py-18 md:scroll-mt-24 md:py-28",
         flushTop && "pt-0 md:pt-0",
         dark && "bg-foreground text-background"
       )}
