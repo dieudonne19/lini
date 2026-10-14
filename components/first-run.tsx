@@ -11,7 +11,7 @@ import { useCopy } from "@/hooks/use-copy"
 import { personalLink } from "@/lib/links"
 
 // Container: picks the screen and wires state to the presentational components.
-// Creation form while no family exists, the one-time link right after creation, `children` otherwise.
+// Creation form for a visitor, the one-time link and the recovery code right after creation, `children` otherwise.
 // One instance keeps the link on screen across the refresh that follows the Server Action.
 export function FirstRun({
   canCreate,

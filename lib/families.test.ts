@@ -2,7 +2,7 @@ import { afterAll, describe, expect, it } from "vitest"
 
 import { memberFromToken } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { createFamilyWithParent } from "@/lib/families"
+import { canCreateFamily, createFamilyWithParent } from "@/lib/families"
 import { personalLink } from "@/lib/links"
 import { normalizeRecoveryCode } from "@/lib/recovery"
 import { hashToken } from "@/lib/token"
@@ -49,5 +49,18 @@ describe.skipIf(!process.env.DATABASE_URL)("createFamilyWithParent", () => {
       hashToken(normalizeRecoveryCode(recoveryCode)!)
     )
     expect(family.recoveryCodeHash).not.toContain(recoveryCode)
+  })
+
+  // The limits are what is tested, not the number of families already in the database (other tests create some).
+  it("lets families be created while the caps are not reached, and refuses when either one is", async () => {
+    const open = { perHour: 1_000_000, total: 1_000_000 }
+    expect(await canCreateFamily(open)).toBe(true)
+    expect(await canCreateFamily({ ...open, perHour: 0 })).toBe(false)
+    expect(await canCreateFamily({ ...open, total: 0 })).toBe(false)
+    // The hourly cap counts the family just created.
+    const familyName = `Test ${crypto.randomUUID()}`
+    familyNames.push(familyName)
+    await createFamilyWithParent({ familyName, name: "Lina", color: "#3D6DF2" })
+    expect(await canCreateFamily({ ...open, perHour: 1 })).toBe(false)
   })
 })

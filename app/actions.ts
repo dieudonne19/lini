@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 import { z } from "zod"
 
 import { clearSession, setSession } from "@/app/session"
-import { createFamilyWithParent, hasFamily } from "@/lib/families"
+import { canCreateFamily, createFamilyWithParent } from "@/lib/families"
 import type { FormState } from "@/lib/form-state"
 import { familySchema } from "@/lib/schemas"
 
@@ -16,7 +16,7 @@ export type CreateFamilyState =
     })
   | null
 
-// Form -> validation -> domain -> cookie. Only possible while no family exists.
+// Form -> validation -> throttle -> domain -> cookie. Anyone can create a family.
 export async function createFamily(
   _prev: CreateFamilyState,
   formData: FormData
@@ -30,11 +30,10 @@ export async function createFamily(
   if (!parsed.success)
     return { errors: z.flattenError(parsed.error).fieldErrors, values }
 
-  // shortcut: two simultaneous first launches could both pass this check; add a DB-level guard if that ever matters.
-  if (await hasFamily()) {
+  if (!(await canCreateFamily())) {
     return {
       message:
-        "Une famille existe déjà. Demande ton lien personnel à un parent.",
+        "Beaucoup de familles ont été créées ces dernières minutes. Réessaie dans une heure.",
       values,
     }
   }

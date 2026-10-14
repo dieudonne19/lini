@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 import { ColorPicker } from "@/components/color-picker"
 import { Button } from "@/components/ui/button"
 import { TextField } from "@/components/ui/text-field"
@@ -18,14 +20,20 @@ function CreateFamilyForm({ action, pending, state }: CreateFamilyFormProps) {
   return (
     <form action={action} className="flex flex-col gap-6" noValidate>
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Bienvenue sur Lini</h1>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Bienvenue sur Lini
+        </h1>
         <p className="text-muted-foreground">
-          Qui fait quoi, et quand êtes-vous tous libres ? Commence par créer ta famille.
+          Qui fait quoi, et quand êtes-vous tous libres ? Commence par créer ta
+          famille.
         </p>
       </div>
 
       {message && (
-        <p role="alert" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+        <p
+          role="alert"
+          className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive"
+        >
           {message}
         </p>
       )}
@@ -60,6 +68,18 @@ function CreateFamilyForm({ action, pending, state }: CreateFamilyFormProps) {
       <Button type="submit" size="lg" className="h-11" disabled={pending}>
         {pending ? "Création en cours…" : "Créer la famille"}
       </Button>
+
+      <p className="text-sm text-muted-foreground">
+        Ta famille a déjà un agenda ? Ouvre ton lien personnel, que tu demandes
+        à un parent. Parent et lien perdu ?{" "}
+        <Link
+          href="/secours"
+          className="font-medium text-foreground underline underline-offset-4 hover:no-underline"
+        >
+          Utilise ton code de secours
+        </Link>
+        .
+      </p>
     </form>
   )
 }
