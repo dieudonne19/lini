@@ -7,6 +7,8 @@ import { AgendaView } from "@/components/agenda-view"
 import { buttonVariants } from "@/components/ui/button"
 import { listOwnActivities } from "@/lib/activities"
 
+export const metadata = { title: "Mon agenda" }
+
 // Every member sees their own agenda. Only the fields the screen needs are sent to the browser.
 export default async function Page() {
   const member = await getSessionMember()

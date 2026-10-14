@@ -6,6 +6,8 @@ import { LinkRequired } from "@/components/link-required"
 import { buttonVariants } from "@/components/ui/button"
 import { hasFamily } from "@/lib/families"
 
+export const metadata = { title: "Commencer" }
+
 // The way in: create the family while none exists, otherwise ask for a personal link. A signed-in member is
 // not redirected (the page refreshes right after the family is created and must keep the one-time link).
 export default async function Page() {

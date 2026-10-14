@@ -4,6 +4,8 @@ import { getSessionMember } from "@/app/session"
 import { EventsView } from "@/components/events-view"
 import { listEvents } from "@/lib/events"
 
+export const metadata = { title: "Événements" }
+
 // The events of the family: what a parent has to validate (or what a child proposed), then the upcoming and
 // the past ones. The domain applies who may see what.
 export default async function Page() {

@@ -5,6 +5,8 @@ import { EditEventPanel } from "@/components/edit-event-panel"
 import { canEdit } from "@/lib/event-rules"
 import { getEvent } from "@/lib/events"
 
+export const metadata = { title: "Modifier l’événement" }
+
 // Parents only, on a confirmed event. Anyone else is sent back to the event (or gets "not found" if they may
 // not see it).
 export default async function Page({

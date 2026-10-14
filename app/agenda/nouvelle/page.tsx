@@ -3,6 +3,8 @@ import { redirect } from "next/navigation"
 import { getSessionMember } from "@/app/session"
 import { NewActivityPanel } from "@/components/new-activity-panel"
 
+export const metadata = { title: "Ajouter une activité" }
+
 export default async function Page() {
   if (!(await getSessionMember())) redirect("/")
 

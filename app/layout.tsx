@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Bricolage_Grotesque, Figtree } from "next/font/google"
 
 import { logout } from "@/app/actions"
@@ -16,9 +16,41 @@ const fontDisplay = Bricolage_Grotesque({
 })
 const fontBody = Figtree({ subsets: ["latin"], variable: "--font-body" })
 
+const TITLE = "Lini · l’agenda partagé de la maison"
+const DESCRIPTION =
+  "Lini réunit les activités de toute la famille dans un seul agenda : qui fait quoi, et quand tout le monde est libre pour organiser un événement."
+
+// On Vercel the production domain is provided; elsewhere (local, CI) the address of the dev server.
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000"
+
 export const metadata: Metadata = {
-  title: "Lini",
-  description: "Qui fait quoi, et quand êtes-vous tous libres ?",
+  metadataBase: new URL(siteUrl),
+  title: { default: TITLE, template: "%s · Lini" },
+  description: DESCRIPTION,
+  applicationName: "Lini",
+  openGraph: {
+    type: "website",
+    siteName: "Lini",
+    locale: "fr_FR",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  // shortcut: a private family tool with no marketing yet, so it stays out of search engines. A meta tag and
+  // not a robots.txt rule, so that link previews (which need to read the page) keep working. Remove it to open the
+  // landing page to search engines.
+  robots: { index: false, follow: false },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#f7f9fe",
+  colorScheme: "light",
 }
 
 export default async function RootLayout({

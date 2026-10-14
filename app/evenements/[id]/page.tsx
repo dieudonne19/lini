@@ -4,6 +4,8 @@ import { getSessionMember } from "@/app/session"
 import { EventDetailView } from "@/components/event-detail-view"
 import { getEvent } from "@/lib/events"
 
+export const metadata = { title: "Événement" }
+
 // One event. A proposal the member may not see is "not found", like an event that does not exist.
 export default async function Page({
   params,

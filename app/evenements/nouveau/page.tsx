@@ -1,7 +1,17 @@
 import { redirect } from "next/navigation"
+import type { Metadata } from "next"
 
 import { getSessionMember } from "@/app/session"
 import { NewEventPanel } from "@/components/new-event-panel"
+
+// The title follows the heading of the page: a parent creates an event, a child proposes one.
+export async function generateMetadata(): Promise<Metadata> {
+  const member = await getSessionMember()
+  return {
+    title:
+      member?.role === "parent" ? "Nouvel événement" : "Proposer un événement",
+  }
+}
 
 // Any member: a parent creates an event, a child proposes one.
 export default async function Page() {

@@ -5,6 +5,8 @@ import { AddMemberPanel } from "@/components/add-member-panel"
 import { ManageMembers } from "@/components/manage-members"
 import { listFamilyMembers } from "@/lib/members"
 
+export const metadata = { title: "Famille" }
+
 // Parents only: anyone else goes back to the home page.
 export default async function Page() {
   const parent = await getSessionParent()

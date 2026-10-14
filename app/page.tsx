@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+import type { Metadata } from "next"
 
 import { getSessionMember } from "@/app/session"
 import { CalendarSkeleton } from "@/components/calendar-skeleton"
@@ -34,6 +35,12 @@ async function CalendarData({
     weekWindow(monday, new Date())
   )
   return <WeekView schedule={schedule} monday={monday} />
+}
+
+// A member sees the week; a visitor gets the default title of the site. The layout's title template does not
+// apply to the page of its own segment, so the suffix is written out.
+export async function generateMetadata(): Promise<Metadata> {
+  return (await getSessionMember()) ? { title: "Semaine · Lini" } : {}
 }
 
 // A signed-in member lands on the week of the family. A visitor without a session gets the landing page,
