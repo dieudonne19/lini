@@ -30,5 +30,7 @@ Portée : **Production** uniquement, sauf mention contraire. Ne mets pas la base
 
 ## Rappels
 
-- Appliquer les migrations sur la base de production avant le premier déploiement (`DIRECT_URL` pointant vers elle).
+- Le script `pnpm build` (`scripts/build.mjs`) génère le client Prisma, puis **applique les migrations (`prisma migrate deploy`) uniquement sur un déploiement Production** (`VERCEL_ENV=production`), avant `next build`. Un build Preview, local ou CI ne migre rien. Si une migration échoue, le déploiement s'arrête et l'ancienne version reste en ligne.
+- Un déploiement Production sans `DIRECT_URL` échoue tout de suite avec un message clair. Une migration qui supprime des données s'exécute au déploiement : relis son SQL (`prisma/migrations/*/migration.sql`) avant de pousser sur la branche de production.
+- Preview : `DATABASE_URL` et `DIRECT_URL` doivent pointer vers la branche **dev** de Neon, jamais vers la production.
 - Ne jamais lancer `pnpm db:seed` contre la production (le seed vide les tables).
