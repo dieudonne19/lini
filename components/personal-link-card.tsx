@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 type PersonalLinkCardProps = {
-  title: string
+  // Both are left out when the card sits inside a dialog that already says them.
+  title?: string
   // h1 when the card is the page's main heading, h2 inside a page that already has one.
   headingLevel?: "h1" | "h2"
   // Explains who the link is for and that it is shown once.
-  children: React.ReactNode
+  children?: React.ReactNode
   link: string
   copied: boolean
   onCopy: () => void
@@ -27,12 +28,16 @@ function PersonalLinkCard({
 }: PersonalLinkCardProps) {
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <Heading className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          {title}
-        </Heading>
-        <p className="text-muted-foreground">{children}</p>
-      </div>
+      {(title || children) && (
+        <div className="flex flex-col gap-2">
+          {title && (
+            <Heading className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              {title}
+            </Heading>
+          )}
+          {children && <p className="text-muted-foreground">{children}</p>}
+        </div>
+      )}
       <Input
         readOnly
         value={link}

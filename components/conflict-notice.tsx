@@ -48,14 +48,14 @@ function ConflictNotice({
         </Alert>
       )}
       {status === "ready" && conflicts.length === 0 && (
-        <Alert role="status">
+        <Alert role="status" variant="success">
           <AlertTitle className="text-base font-semibold">
             Personne n&apos;a d&apos;activité à ce moment-là
           </AlertTitle>
         </Alert>
       )}
       {status === "ready" && conflicts.length > 0 && (
-        <Alert role="status">
+        <Alert role="status" variant="warning">
           <AlertTitle className="text-base font-semibold">
             Occupés à ce moment-là
           </AlertTitle>
