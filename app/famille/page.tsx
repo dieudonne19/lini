@@ -21,21 +21,21 @@ export default async function Page() {
     hasRecoveryCode(parent.familyId),
   ])
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-4 py-10 *:max-w-md">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-4 py-10 *:max-w-2xl">
       <section className="flex flex-col gap-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">
             Famille
           </h1>
           <AddMemberPanel />
         </div>
         <ManageMembers members={members} currentMemberId={parent.id} />
       </section>
-      <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-semibold">Code de secours</h2>
+      <section className="flex flex-col gap-3 border-t pt-8">
+        <h2 className="text-2xl font-semibold">Code de secours</h2>
         <RecoveryCodePanel hasCode={hasCode} />
       </section>
-      <section className="flex flex-col gap-3">
+      <section className="flex flex-col gap-3 border-t pt-8">
         <h2 className="text-xl font-semibold">Supprimer la famille</h2>
         <p className="text-muted-foreground">
           Efface tout ce que Lini garde sur ta famille.{" "}

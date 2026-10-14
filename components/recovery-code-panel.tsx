@@ -52,9 +52,9 @@ export function RecoveryCodePanel({ hasCode }: { hasCode: boolean }) {
       <form action={action}>
         <Button
           type="submit"
-          variant="outline"
+          variant="link"
           size="lg"
-          className="h-11"
+          className="h-11 px-0"
           disabled={pending}
         >
           <LifeBuoy aria-hidden />

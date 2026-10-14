@@ -3,6 +3,7 @@
 import { useActionState } from "react"
 
 import { manageMember } from "@/app/famille/actions"
+import { AddMemberPanel } from "@/components/add-member-panel"
 import { MemberActions } from "@/components/member-actions"
 import { MemberList } from "@/components/member-list"
 import { PersonalLinkCard } from "@/components/personal-link-card"
@@ -55,6 +56,8 @@ export function ManageMembers({
       )}
       <MemberList
         members={members}
+        currentMemberId={currentMemberId}
+        addChild={<AddMemberPanel variant="child" />}
         renderActions={(member) => (
           <MemberActions
             member={member}
