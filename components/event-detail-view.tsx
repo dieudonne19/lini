@@ -67,6 +67,7 @@ export function EventDetailView({ event, viewer }: EventDetailViewProps) {
   return (
     <EventDetail
       event={event}
+      viewerId={viewer.id}
       can={{
         answer: canAnswer(event, now),
         edit: canEdit(viewer, event),

@@ -10,11 +10,11 @@ type AnswerButtonsProps = {
   pending: boolean
 }
 
-// Pure: "Je viens", "Je ne viens pas", "Peut-être". The current answer is filled and announced as pressed,
-// so it does not rely on color alone.
+// Pure: "Je viens", "Je ne viens pas", "Peut-être", three equal choices side by side. The current answer is filled
+// and announced as pressed, so it does not rely on color alone.
 function AnswerButtons({ current, action, pending }: AnswerButtonsProps) {
   return (
-    <form action={action} className="flex flex-wrap gap-2">
+    <form action={action} className="grid grid-cols-3 gap-2">
       {(Object.keys(ANSWER_LABELS) as (keyof typeof ANSWER_LABELS)[]).map(
         (answer) => (
           <Button
@@ -24,10 +24,10 @@ function AnswerButtons({ current, action, pending }: AnswerButtonsProps) {
             value={answer}
             variant={current === answer ? "default" : "outline"}
             aria-pressed={current === answer}
-            className="h-11"
+            className="h-auto min-h-16 flex-col gap-1.5 px-2 py-3 text-center leading-tight whitespace-normal"
             disabled={pending}
           >
-            <AnswerIcon status={answer} />
+            <AnswerIcon status={answer} className="size-5" />
             {ANSWER_LABELS[answer]}
           </Button>
         )

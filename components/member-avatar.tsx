@@ -2,6 +2,8 @@ import { readableTextColor } from "@/lib/colors"
 
 const SIZES = {
   md: "size-10 text-xl",
+  // Next to a name in a list of people.
+  chip: "size-8 text-base",
   // A dot with an initial, for the busy members of a day in the month grid.
   sm: "size-5 text-xs",
 } as const
