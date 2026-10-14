@@ -2,8 +2,16 @@ import { AgendaItemRow } from "@/components/agenda-item-row"
 import type { AgendaDay } from "@/lib/agenda"
 import { formatDayHeading } from "@/lib/format-date"
 
-// Pure: days that have something to show, each with its occurrences.
-function AgendaDayList({ days, today }: { days: AgendaDay[]; today: Date }) {
+// Pure: days that have something to show, each with its occurrences, in the member's color.
+function AgendaDayList({
+  days,
+  today,
+  color,
+}: {
+  days: AgendaDay[]
+  today: Date
+  color: string
+}) {
   return (
     <div className="flex flex-col gap-8">
       {days.map((day) => (
@@ -16,6 +24,7 @@ function AgendaDayList({ days, today }: { days: AgendaDay[]; today: Date }) {
               <AgendaItemRow
                 key={`${item.activity.id}-${item.startsAt.getTime()}`}
                 item={item}
+                color={color}
               />
             ))}
           </ul>

@@ -12,14 +12,20 @@ const DAYS_SHOWN = 14
 
 // Container: occurrences depend on the device timezone, so they are computed in the browser.
 // The skeleton is what the server renders, which keeps hydration identical.
-export function AgendaView({ activities }: { activities: AgendaActivity[] }) {
+export function AgendaView({
+  activities,
+  color,
+}: {
+  activities: AgendaActivity[]
+  color: string
+}) {
   const isClient = useIsClient()
   const [today] = useState(() => new Date())
 
   if (!isClient) return <AgendaSkeleton />
   const days = buildAgendaDays(activities, today, DAYS_SHOWN)
   return days.length ? (
-    <AgendaDayList days={days} today={today} />
+    <AgendaDayList days={days} today={today} color={color} />
   ) : (
     <AgendaEmpty />
   )

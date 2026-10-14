@@ -34,9 +34,11 @@ export default async function Page() {
   )
 
   return (
-    <main className="mx-auto flex flex-1 w-full max-w-5xl flex-col gap-8 px-4 py-10 *:max-w-md">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-10 *:max-w-md">
       <div className="flex flex-col gap-4">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Mon agenda</h1>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Mon agenda
+        </h1>
         <Link
           href="/agenda/nouvelle"
           className={buttonVariants({ size: "lg", className: "h-11" })}
@@ -44,7 +46,7 @@ export default async function Page() {
           Ajouter une activité
         </Link>
       </div>
-      <AgendaView activities={activities} />
+      <AgendaView activities={activities} color={member.color} />
     </main>
   )
 }
