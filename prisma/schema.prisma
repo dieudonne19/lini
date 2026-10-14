@@ -35,11 +35,13 @@ enum RsvpStatus {
 }
 
 model Family {
-  id        String        @id @default(cuid())
-  name      String
-  createdAt DateTime      @default(now())
-  members   Member[]
-  events    FamilyEvent[]
+  id               String        @id @default(cuid())
+  name             String
+  createdAt        DateTime      @default(now())
+  // SHA-256 of the recovery code (one use: a recovery replaces it). The code itself is never stored.
+  recoveryCodeHash String?       @unique
+  members          Member[]
+  events           FamilyEvent[]
 }
 
 model Member {

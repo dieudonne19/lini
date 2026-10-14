@@ -10,7 +10,11 @@ import { familySchema } from "@/lib/schemas"
 
 export type CreateFamilyField = "familyName" | "name" | "color"
 export type CreateFamilyState =
-  (NonNullable<FormState<CreateFamilyField>> & { token?: string }) | null
+  | (NonNullable<FormState<CreateFamilyField>> & {
+      token?: string
+      recoveryCode?: string
+    })
+  | null
 
 // Form -> validation -> domain -> cookie. Only possible while no family exists.
 export async function createFamily(
@@ -35,9 +39,9 @@ export async function createFamily(
     }
   }
 
-  const token = await createFamilyWithParent(parsed.data)
+  const { token, recoveryCode } = await createFamilyWithParent(parsed.data)
   await setSession(token)
-  return { token }
+  return { token, recoveryCode }
 }
 
 // Only removes the cookie: the personal link keeps working.

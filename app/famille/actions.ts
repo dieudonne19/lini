@@ -12,6 +12,7 @@ import {
   regenerateLink,
   removeMember,
 } from "@/lib/members"
+import { setRecoveryCode } from "@/lib/recovery"
 import { memberSchema } from "@/lib/schemas"
 
 export type AddMemberField = "name" | "color" | "role" | "phone"
@@ -69,7 +70,8 @@ export async function manageMember(
   formData: FormData
 ): Promise<ManageMemberState> {
   const parent = await getSessionParent()
-  if (!parent) return { message: "Seuls les parents peuvent gérer les membres." }
+  if (!parent)
+    return { message: "Seuls les parents peuvent gérer les membres." }
 
   const parsed = manageSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success)
@@ -97,4 +99,17 @@ export async function manageMember(
         )
   revalidatePath("/famille")
   return result.ok ? null : { message: FAILURE_MESSAGES[result.reason] }
+}
+
+export type RenewRecoveryState = { message?: string; code?: string } | null
+
+// Makes a new recovery code for the family (the old one stops working) and returns it once. Parents only.
+export async function renewRecoveryCode(): Promise<RenewRecoveryState> {
+  const parent = await getSessionParent()
+  if (!parent)
+    return { message: "Seuls les parents peuvent gérer le code de secours." }
+
+  const code = await setRecoveryCode(parent.familyId)
+  revalidatePath("/famille")
+  return { code }
 }

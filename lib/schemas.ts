@@ -169,3 +169,10 @@ export const eventSchema = z
   })
 
 export type EventInput = z.infer<typeof eventSchema>
+
+// A parent who lost their link: the recovery code and their first name. The code is only trimmed here, the domain
+// reads it back (case, dashes, look-alike letters).
+export const recoverySchema = z.object({
+  code: z.string().trim().min(1).max(64),
+  name,
+})

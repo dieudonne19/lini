@@ -4,10 +4,14 @@ import { memberFromToken } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { createFamilyWithParent } from "@/lib/families"
 import { personalLink } from "@/lib/links"
+import { normalizeRecoveryCode } from "@/lib/recovery"
+import { hashToken } from "@/lib/token"
 
 describe("personalLink", () => {
   it("builds the login URL", () => {
-    expect(personalLink("https://lini.app", "abc")).toBe("https://lini.app/m/abc")
+    expect(personalLink("https://lini.app", "abc")).toBe(
+      "https://lini.app/m/abc"
+    )
   })
 })
 
@@ -22,12 +26,28 @@ describe.skipIf(!process.env.DATABASE_URL)("createFamilyWithParent", () => {
   it("creates a family whose only member is a parent reachable by the returned token", async () => {
     const familyName = `Test ${crypto.randomUUID()}`
     familyNames.push(familyName)
-    const token = await createFamilyWithParent({ familyName, name: "Lina", color: "#3D6DF2" })
+    const { token, recoveryCode } = await createFamilyWithParent({
+      familyName,
+      name: "Lina",
+      color: "#3D6DF2",
+    })
 
     const member = await memberFromToken(token)
-    expect(member).toMatchObject({ name: "Lina", role: "parent", color: "#3D6DF2" })
-    const family = await db.family.findUniqueOrThrow({ where: { id: member!.familyId }, include: { members: true } })
+    expect(member).toMatchObject({
+      name: "Lina",
+      role: "parent",
+      color: "#3D6DF2",
+    })
+    const family = await db.family.findUniqueOrThrow({
+      where: { id: member!.familyId },
+      include: { members: true },
+    })
     expect(family.name).toBe(familyName)
     expect(family.members).toHaveLength(1)
+    // Only the hash of the recovery code is stored, never the code itself.
+    expect(family.recoveryCodeHash).toBe(
+      hashToken(normalizeRecoveryCode(recoveryCode)!)
+    )
+    expect(family.recoveryCodeHash).not.toContain(recoveryCode)
   })
 })

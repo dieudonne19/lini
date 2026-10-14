@@ -15,6 +15,8 @@ type PersonalLinkCardProps = {
   onCopy: () => void
   // A cross in the corner, for a card that sits in a page next to other content.
   onDismiss?: () => void
+  // Something more to read before leaving, e.g. a recovery code, set apart under the link.
+  footer?: React.ReactNode
   // A last step, for a card that ends a flow ("Ouvrir la semaine", "Terminer").
   continueLabel?: string
   onContinue?: () => void
@@ -30,6 +32,7 @@ function PersonalLinkCard({
   copied,
   onCopy,
   onDismiss,
+  footer,
   continueLabel,
   onContinue,
 }: PersonalLinkCardProps) {
@@ -83,6 +86,9 @@ function PersonalLinkCard({
       <p role="status" className="sr-only">
         {copied ? "Lien copié." : ""}
       </p>
+      {footer && (
+        <div className="border-t border-primary/20 pt-4">{footer}</div>
+      )}
       {continueLabel && onContinue && (
         <Button
           variant="outline"

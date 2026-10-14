@@ -6,6 +6,7 @@ import { useActionState } from "react"
 import { createFamily } from "@/app/actions"
 import { CreateFamilyForm } from "@/components/create-family-form"
 import { PersonalLinkCard } from "@/components/personal-link-card"
+import { RecoveryCode } from "@/components/recovery-code"
 import { useCopy } from "@/hooks/use-copy"
 import { personalLink } from "@/lib/links"
 
@@ -34,12 +35,16 @@ export function FirstRun({
           link={link}
           copied={copied}
           onCopy={() => copy(link)}
+          footer={
+            state.recoveryCode && <RecoveryCode code={state.recoveryCode} />
+          }
           continueLabel="Ouvrir la semaine"
           onContinue={() => router.push("/")}
         >
-          Voici ton lien personnel. Il te connecte sans mot de passe et ne
-          s&apos;affichera plus : copie-le maintenant. Quiconque a ce lien est
-          toi, ne le partage pas.
+          Voici ton lien personnel. Il te connecte sans mot de passe. Voici
+          aussi ton code de secours, pour le jour où tu le perds. Ni l&apos;un
+          ni l&apos;autre ne s&apos;affichera plus : copie-les maintenant.
+          Quiconque a ce lien est toi, ne le partage pas.
         </PersonalLinkCard>
       </div>
     )
