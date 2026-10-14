@@ -7,7 +7,7 @@ export default async function Page() {
   if (!(await getSessionMember())) redirect("/")
 
   return (
-    <main className="mx-auto flex flex-1 w-full max-w-5xl flex-col gap-8 px-4 py-10 *:max-w-md">
+    <main className="mx-auto flex w-full max-w-120 flex-1 flex-col gap-8 px-4 py-10">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
         Ajouter une activité
       </h1>
