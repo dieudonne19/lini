@@ -1,3 +1,5 @@
+import { Trash2 } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 
 type ConfirmDeleteProps = {
@@ -24,7 +26,8 @@ function ConfirmDelete({
 }: ConfirmDeleteProps) {
   return (
     <details>
-      <summary className="inline-flex h-11 cursor-pointer items-center text-sm font-medium text-destructive underline-offset-4 hover:underline">
+      <summary className="inline-flex h-11 cursor-pointer items-center gap-2 text-sm font-medium text-destructive underline-offset-4 hover:underline">
+        <Trash2 aria-hidden className="size-4" />
         {label}
       </summary>
       <form
@@ -43,6 +46,7 @@ function ConfirmDelete({
           className="h-11 justify-start"
           disabled={pending}
         >
+          <Trash2 aria-hidden />
           {pending ? pendingLabel : confirmLabel}
         </Button>
       </form>

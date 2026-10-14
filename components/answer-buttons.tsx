@@ -1,3 +1,4 @@
+import { AnswerIcon } from "@/components/answer-icon"
 import { Button } from "@/components/ui/button"
 import { ANSWER_LABELS } from "@/lib/event-labels"
 import type { RsvpStatus } from "@/lib/generated/prisma/client"
@@ -26,6 +27,7 @@ function AnswerButtons({ current, action, pending }: AnswerButtonsProps) {
             className="h-11"
             disabled={pending}
           >
+            <AnswerIcon status={answer} />
             {ANSWER_LABELS[answer]}
           </Button>
         )

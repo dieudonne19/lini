@@ -1,3 +1,4 @@
+import { CalendarX } from "lucide-react"
 import Link from "next/link"
 
 import { formatEventWhen } from "@/lib/format-date"
@@ -24,7 +25,10 @@ function EventList({
     <section className="flex flex-col gap-3">
       <h2 className="text-xl font-semibold">{title}</h2>
       {events.length === 0 ? (
-        <p className="text-muted-foreground">{emptyText}</p>
+        <p className="flex items-center gap-2 text-muted-foreground">
+          <CalendarX aria-hidden className="size-5 shrink-0" />
+          {emptyText}
+        </p>
       ) : (
         <ul className="flex flex-col gap-3">
           {events.map((event) => (

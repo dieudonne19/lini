@@ -1,3 +1,4 @@
+import { CalendarDays, NotebookPen, PartyPopper, Users } from "lucide-react"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
@@ -9,15 +10,17 @@ type AppNavProps = {
 }
 
 const linkClass =
-  "inline-flex min-h-11 shrink-0 items-center rounded-lg px-2 text-sm sm:px-3 transition-colors hover:bg-muted"
+  "inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-2 text-sm sm:px-3 transition-colors"
 
 // Pure: the main links of a signed-in member. The current page is marked for screen readers and by a tint.
 function AppNav({ currentPath, canManageFamily, className }: AppNavProps) {
   const links = [
-    { href: "/", label: "Semaine" },
-    { href: "/agenda", label: "Mon agenda" },
-    { href: "/evenements", label: "Événements" },
-    ...(canManageFamily ? [{ href: "/famille", label: "Famille" }] : []),
+    { href: "/", label: "Semaine", icon: CalendarDays },
+    { href: "/agenda", label: "Mon agenda", icon: NotebookPen },
+    { href: "/evenements", label: "Événements", icon: PartyPopper },
+    ...(canManageFamily
+      ? [{ href: "/famille", label: "Famille", icon: Users }]
+      : []),
   ]
   const isCurrent = (href: string) =>
     href === "/" ? currentPath === "/" : currentPath.startsWith(href)
@@ -30,7 +33,7 @@ function AppNav({ currentPath, canManageFamily, className }: AppNavProps) {
         className
       )}
     >
-      {links.map(({ href, label }) => (
+      {links.map(({ href, label, icon: Icon }) => (
         <Link
           key={href}
           href={href}
@@ -38,10 +41,11 @@ function AppNav({ currentPath, canManageFamily, className }: AppNavProps) {
           className={cn(
             linkClass,
             isCurrent(href)
-              ? "bg-accent font-semibold"
+              ? "font-semibold"
               : "font-medium text-muted-foreground hover:text-foreground"
           )}
         >
+          <Icon aria-hidden className="hidden size-4 shrink-0 sm:block" />
           {label}
         </Link>
       ))}

@@ -1,3 +1,5 @@
+import { Check, Copy } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -47,6 +49,7 @@ function PersonalLinkCard({
       />
       <div className="flex flex-col gap-3">
         <Button size="lg" className="h-11" onClick={onCopy}>
+          {copied ? <Check aria-hidden /> : <Copy aria-hidden />}
           Copier le lien
         </Button>
         <p role="status" className="min-h-5 text-sm text-muted-foreground">

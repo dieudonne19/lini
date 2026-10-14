@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react"
+import { CalendarSearch, ChevronDown } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -50,7 +50,10 @@ function FreeSlotsPanel({
       <CollapsibleTrigger
         className={`group ${buttonVariants({ variant: "outline", className: "h-11 w-full justify-between border-input" })}`}
       >
-        Trouver un créneau où tout le monde est libre
+        <span className="flex items-center gap-2">
+          <CalendarSearch aria-hidden />
+          Trouver un créneau où tout le monde est libre
+        </span>
         <ChevronDown
           aria-hidden
           className="transition-transform group-data-[panel-open]:rotate-180"

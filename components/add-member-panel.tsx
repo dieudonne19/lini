@@ -1,6 +1,7 @@
 "use client"
 
 import { useActionState, useState } from "react"
+import { Plus } from "lucide-react"
 
 import { addMember } from "@/app/famille/actions"
 import { AddMemberForm } from "@/components/add-member-form"
@@ -38,6 +39,7 @@ export function AddMemberPanel() {
       }}
     >
       <DialogTrigger render={<Button size="lg" className="h-11" />}>
+        <Plus aria-hidden />
         Ajouter un membre
       </DialogTrigger>
       <DialogContent showCloseButton={!visibleToken}>

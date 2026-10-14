@@ -1,6 +1,7 @@
 "use client"
 
 import { useActionState } from "react"
+import { Plus } from "lucide-react"
 import Link from "next/link"
 
 import { reviewProposalAction } from "@/app/evenements/actions"
@@ -37,11 +38,14 @@ export function EventsView({
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Événements</h1>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Événements
+        </h1>
         <Link
           href="/evenements/nouveau"
           className={buttonVariants({ className: "h-11" })}
         >
+          <Plus aria-hidden />
           {isParent ? "Nouvel événement" : "Proposer un événement"}
         </Link>
       </div>

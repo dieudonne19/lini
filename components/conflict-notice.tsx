@@ -1,3 +1,5 @@
+import { CircleAlert, CircleCheck, TriangleAlert } from "lucide-react"
+
 import { MemberAvatar } from "@/components/member-avatar"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -28,6 +30,7 @@ function ConflictNotice({
       )}
       {status === "error" && (
         <Alert variant="destructive" role="alert">
+          <CircleAlert aria-hidden />
           <AlertTitle className="text-base font-semibold">
             Impossible de vérifier les agendas
           </AlertTitle>
@@ -49,6 +52,7 @@ function ConflictNotice({
       )}
       {status === "ready" && conflicts.length === 0 && (
         <Alert role="status" variant="success">
+          <CircleCheck aria-hidden />
           <AlertTitle className="text-base font-semibold">
             Personne n&apos;a d&apos;activité à ce moment-là
           </AlertTitle>
@@ -56,6 +60,7 @@ function ConflictNotice({
       )}
       {status === "ready" && conflicts.length > 0 && (
         <Alert role="status" variant="warning">
+          <TriangleAlert aria-hidden />
           <AlertTitle className="text-base font-semibold">
             Occupés à ce moment-là
           </AlertTitle>

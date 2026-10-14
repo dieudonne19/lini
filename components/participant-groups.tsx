@@ -1,3 +1,4 @@
+import { AnswerIcon } from "@/components/answer-icon"
 import { MemberAvatar } from "@/components/member-avatar"
 import { ANSWER_GROUPS } from "@/lib/event-labels"
 import type { EventAnswer } from "@/lib/events"
@@ -12,7 +13,8 @@ function ParticipantGroups({ answers }: { answers: EventAnswer[] }) {
         if (group.length === 0) return null
         return (
           <section key={status}>
-            <h3 className="mb-2 text-sm font-semibold">
+            <h3 className="mb-2 flex items-center gap-1.5 text-sm font-semibold">
+              <AnswerIcon status={status} className="size-4" />
               {title} ({group.length})
             </h3>
             <ul className="flex flex-wrap gap-x-4 gap-y-2">

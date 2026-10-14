@@ -1,3 +1,4 @@
+import { Hourglass, MapPin, Pencil } from "lucide-react"
 import Link from "next/link"
 
 import { AnswerButtons } from "@/components/answer-buttons"
@@ -49,7 +50,8 @@ function EventDetail({
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-2">
         {isProposal && (
-          <p className="w-fit rounded-full bg-warning px-3 py-1 text-sm font-semibold text-warning-foreground">
+          <p className="inline-flex w-fit items-center gap-1.5 rounded-full bg-warning px-3 py-1 text-sm font-semibold text-warning-foreground">
+            <Hourglass aria-hidden className="size-4" />
             Proposition en attente de validation
           </p>
         )}
@@ -57,7 +59,12 @@ function EventDetail({
           {event.title}
         </h1>
         <p className="text-lg font-medium">{formatEventWhen(event)}</p>
-        {event.place && <p className="text-muted-foreground">{event.place}</p>}
+        {event.place && (
+          <p className="flex items-center gap-1.5 text-muted-foreground">
+            <MapPin aria-hidden className="size-4 shrink-0" />
+            {event.place}
+          </p>
+        )}
         {isProposal && (
           <p className="text-muted-foreground">
             Proposé par {event.createdByName ?? "un membre"}.
@@ -86,6 +93,7 @@ function EventDetail({
             className: "h-11 w-fit",
           })}
         >
+          <Pencil aria-hidden />
           Modifier l&apos;événement
         </Link>
       )}

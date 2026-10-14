@@ -1,3 +1,5 @@
+import { Check, X } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 
 type ProposalActionsProps = {
@@ -19,6 +21,7 @@ function ProposalActions({ eventId, action, pending }: ProposalActionsProps) {
         className="h-11"
         disabled={pending}
       >
+        <Check aria-hidden />
         Valider
       </Button>
       <Button
@@ -29,6 +32,7 @@ function ProposalActions({ eventId, action, pending }: ProposalActionsProps) {
         className="h-11"
         disabled={pending}
       >
+        <X aria-hidden />
         Refuser
       </Button>
     </form>
