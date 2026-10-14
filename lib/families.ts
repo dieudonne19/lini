@@ -4,9 +4,9 @@ import type { FamilyInput } from "@/lib/schemas"
 import { generateToken, hashToken } from "@/lib/token"
 
 // Anyone can create a family, so creation is throttled: a cap on the families created in the last hour, and one on
-// all of them. It keeps a script from filling the database; it is not a defence against a determined attacker.
-// shortcut: global counters, not per address, and two simultaneous requests can both pass the check. Add a per-address
-// limiter backed by a shared store if abuse ever shows up.
+// all of them, on top of the per-address limit (lib/rate-limit.ts). It keeps a script from filling the database.
+// shortcut: global counters, and two simultaneous requests can both pass the check. A botnet with many addresses can
+// still use up the hourly cap; add a bot check on the form if that ever happens.
 export const FAMILY_LIMITS = { perHour: 10, total: 500 }
 
 export async function canCreateFamily(limits = FAMILY_LIMITS) {
@@ -17,6 +17,12 @@ export async function canCreateFamily(limits = FAMILY_LIMITS) {
     db.family.count(),
   ])
   return lastHour < limits.perHour && total < limits.total
+}
+
+// Deletes a family and everything that belongs to it: members, their activities, events and answers, through the
+// cascades of the schema. Irreversible.
+export async function deleteFamily(familyId: string) {
+  await db.family.delete({ where: { id: familyId } })
 }
 
 // Creates a family and its first parent. Returns the personal link token and the recovery code: neither is stored,

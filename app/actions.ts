@@ -6,6 +6,7 @@ import { z } from "zod"
 import { clearSession, setSession } from "@/app/session"
 import { canCreateFamily, createFamilyWithParent } from "@/lib/families"
 import type { FormState } from "@/lib/form-state"
+import { allowVisitor } from "@/lib/rate-limit"
 import { familySchema } from "@/lib/schemas"
 
 export type CreateFamilyField = "familyName" | "name" | "color"
@@ -30,6 +31,12 @@ export async function createFamily(
   if (!parsed.success)
     return { errors: z.flattenError(parsed.error).fieldErrors, values }
 
+  if (!(await allowVisitor("createFamily"))) {
+    return {
+      message: "Tu as déjà créé plusieurs familles. Réessaie dans une heure.",
+      values,
+    }
+  }
   if (!(await canCreateFamily())) {
     return {
       message:

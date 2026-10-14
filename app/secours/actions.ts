@@ -1,6 +1,7 @@
 "use server"
 
 import { setSession } from "@/app/session"
+import { allowVisitor } from "@/lib/rate-limit"
 import { recoverParentLink } from "@/lib/recovery"
 import { recoverySchema } from "@/lib/schemas"
 
@@ -27,6 +28,12 @@ export async function recoverAccess(
   })
   if (!parsed.success)
     return { message: "Écris ton code de secours et ton prénom.", name }
+
+  if (!(await allowVisitor("recoverAccess")))
+    return {
+      message: "Trop de tentatives. Réessaie dans quelques minutes.",
+      name,
+    }
 
   const result = await recoverParentLink(parsed.data.code, parsed.data.name)
   if (!result)

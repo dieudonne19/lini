@@ -2,7 +2,11 @@ import { afterAll, describe, expect, it } from "vitest"
 
 import { memberFromToken } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { canCreateFamily, createFamilyWithParent } from "@/lib/families"
+import {
+  canCreateFamily,
+  createFamilyWithParent,
+  deleteFamily,
+} from "@/lib/families"
 import { personalLink } from "@/lib/links"
 import { normalizeRecoveryCode } from "@/lib/recovery"
 import { hashToken } from "@/lib/token"
@@ -62,5 +66,55 @@ describe.skipIf(!process.env.DATABASE_URL)("createFamilyWithParent", () => {
     familyNames.push(familyName)
     await createFamilyWithParent({ familyName, name: "Lina", color: "#3D6DF2" })
     expect(await canCreateFamily({ ...open, perHour: 1 })).toBe(false)
+  })
+
+  it("deletes a family with all it holds, and leaves other families alone", async () => {
+    const make = async (label: string) => {
+      const familyName = `Test ${label} ${crypto.randomUUID()}`
+      familyNames.push(familyName)
+      const { token } = await createFamilyWithParent({
+        familyName,
+        name: "Lina",
+        color: "#3D6DF2",
+      })
+      return (await memberFromToken(token))!
+    }
+    const doomed = await make("doomed")
+    const kept = await make("kept")
+    const at = new Date("2026-10-20T10:00:00Z")
+    const activity = await db.activity.create({
+      data: { memberId: doomed.id, title: "Piano", startsAt: at, endsAt: at },
+    })
+    const event = await db.familyEvent.create({
+      data: {
+        familyId: doomed.familyId,
+        createdById: doomed.id,
+        status: "confirmed",
+        title: "Dîner",
+        startsAt: at,
+        endsAt: at,
+        rsvps: { create: { memberId: doomed.id } },
+      },
+    })
+
+    await deleteFamily(doomed.familyId)
+
+    expect(
+      await db.family.findUnique({ where: { id: doomed.familyId } })
+    ).toBeNull()
+    expect(await db.member.findUnique({ where: { id: doomed.id } })).toBeNull()
+    expect(
+      await db.activity.findUnique({ where: { id: activity.id } })
+    ).toBeNull()
+    expect(
+      await db.familyEvent.findUnique({ where: { id: event.id } })
+    ).toBeNull()
+    expect(await db.rsvp.count({ where: { eventId: event.id } })).toBe(0)
+    expect(
+      await db.family.findUnique({ where: { id: kept.familyId } })
+    ).not.toBeNull()
+    expect(
+      await db.member.findUnique({ where: { id: kept.id } })
+    ).not.toBeNull()
   })
 })

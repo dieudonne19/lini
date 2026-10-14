@@ -129,3 +129,13 @@ model PushSubscription {
 
   @@index([memberId])
 }
+
+// Attempt counters for the endpoints open to anyone. The key is a hash of the action and the visitor's address, so no
+// address is stored; a row is dropped once its window has passed (see lib/rate-limit.ts).
+model RateLimit {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
+}

@@ -1,7 +1,9 @@
+import Link from "next/link"
 import { redirect } from "next/navigation"
 
 import { getSessionParent } from "@/app/session"
 import { AddMemberPanel } from "@/components/add-member-panel"
+import { DeleteFamilyPanel } from "@/components/delete-family-panel"
 import { ManageMembers } from "@/components/manage-members"
 import { RecoveryCodePanel } from "@/components/recovery-code-panel"
 import { listFamilyMembers } from "@/lib/members"
@@ -32,6 +34,20 @@ export default async function Page() {
       <section className="flex flex-col gap-3">
         <h2 className="text-xl font-semibold">Code de secours</h2>
         <RecoveryCodePanel hasCode={hasCode} />
+      </section>
+      <section className="flex flex-col gap-3">
+        <h2 className="text-xl font-semibold">Supprimer la famille</h2>
+        <p className="text-muted-foreground">
+          Efface tout ce que Lini garde sur ta famille.{" "}
+          <Link
+            href="/confidentialite"
+            className="text-foreground underline underline-offset-4 hover:no-underline"
+          >
+            Voir ce que Lini garde
+          </Link>
+          .
+        </p>
+        <DeleteFamilyPanel />
       </section>
     </main>
   )

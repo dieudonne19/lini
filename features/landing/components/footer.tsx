@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 import { CONTACT_LINKS, FOOTER_TEXT } from "../data/content"
 import { Logo } from "./logo"
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from "./social-icons"
@@ -12,7 +14,15 @@ export function Footer() {
   return (
     <footer className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-4 px-4 py-10 text-sm text-muted-foreground md:px-6">
       <Logo label="Lini" className="h-10 w-auto" />
-      <p>{FOOTER_TEXT}</p>
+      <p>
+        {FOOTER_TEXT} ·{" "}
+        <Link
+          href="/confidentialite"
+          className="underline underline-offset-4 hover:text-foreground"
+        >
+          Confidentialité
+        </Link>
+      </p>
       <ul aria-label="Contact" className="flex items-center gap-1">
         {CONTACT_LINKS.map(({ label, href }) => {
           const Icon = ICONS[label]

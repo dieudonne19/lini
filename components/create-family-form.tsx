@@ -80,6 +80,14 @@ function CreateFamilyForm({ action, pending, state }: CreateFamilyFormProps) {
         </Link>
         .
       </p>
+      <p className="text-sm text-muted-foreground">
+        <Link
+          href="/confidentialite"
+          className="underline underline-offset-4 hover:text-foreground"
+        >
+          Ce que Lini garde sur ta famille
+        </Link>
+      </p>
     </form>
   )
 }

@@ -1,10 +1,12 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { z } from "zod"
 
-import { getSessionParent } from "@/app/session"
+import { clearSession, getSessionParent } from "@/app/session"
 import { db } from "@/lib/db"
+import { deleteFamily } from "@/lib/families"
 import type { FormState } from "@/lib/form-state"
 import {
   changeRole,
@@ -112,4 +114,18 @@ export async function renewRecoveryCode(): Promise<RenewRecoveryState> {
   const code = await setRecoveryCode(parent.familyId)
   revalidatePath("/famille")
   return { code }
+}
+
+export type DeleteFamilyState = { message?: string } | null
+
+// Deletes the parent's own family, whatever it holds, then signs the parent out. Parents only; the family comes from
+// the session, never from the request.
+export async function deleteFamilyAction(): Promise<DeleteFamilyState> {
+  const parent = await getSessionParent()
+  if (!parent)
+    return { message: "Seuls les parents peuvent supprimer la famille." }
+
+  await deleteFamily(parent.familyId)
+  await clearSession()
+  redirect("/")
 }
