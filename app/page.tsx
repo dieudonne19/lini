@@ -2,6 +2,7 @@ import { Suspense } from "react"
 import type { Metadata } from "next"
 
 import { getSessionMember } from "@/app/session"
+import { InstallPrompt } from "@/components/install-prompt"
 import { CalendarSkeleton } from "@/components/calendar-skeleton"
 import { MonthView } from "@/components/month-view"
 import { WeekView } from "@/components/week-view"
@@ -77,6 +78,7 @@ export default async function Page({
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-8">
+      <InstallPrompt />
       <Suspense
         key={month ?? monday ?? "current-week"}
         fallback={<CalendarSkeleton />}
