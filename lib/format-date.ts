@@ -92,6 +92,47 @@ export function formatFullDay(day: Date) {
   return formatDate({ weekday: "long", day: "numeric", month: "long" }, day)
 }
 
+// An all-day date is a UTC date, shown as is: the same day in every timezone.
+const utcDay = (d: Date) =>
+  new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
+
+// The date block of an event in a list: { weekday: "sam.", day: "17", month: "oct." }, for the day it starts.
+export function formatEventDay(event: Pick<AgendaItem, "startsAt" | "allDay">) {
+  const start = event.allDay ? utcDay(event.startsAt) : event.startsAt
+  return {
+    weekday: formatDate({ weekday: "short" }, start),
+    day: formatDate({ day: "numeric" }, start),
+    month: formatDate({ month: "short" }, start),
+  }
+}
+
+// What the list adds under the title, or "" when there is nothing more to say than the date block:
+// "14:00 – 16:00 · Chez mamie", "Jusqu'au dim. 18 oct.", "Chez mamie". An all-day event on one day has no time to show.
+export function formatEventMeta(
+  event: Pick<AgendaItem, "startsAt" | "endsAt" | "allDay">,
+  place?: string | null
+) {
+  const [start, end] = event.allDay
+    ? [utcDay(event.startsAt), utcDay(event.endsAt)]
+    : [event.startsAt, event.endsAt]
+  const sameDay = start.toDateString() === end.toDateString()
+  const endDay = formatDate(
+    { weekday: "short", day: "numeric", month: "short" },
+    end
+  )
+
+  const parts: string[] = []
+  if (!sameDay)
+    parts.push(
+      event.allDay
+        ? `Jusqu'au ${endDay}`
+        : `Jusqu'au ${endDay}, ${formatTime(event.endsAt)}`
+    )
+  else if (!event.allDay) parts.push(formatTimeRange(event))
+  if (place) parts.push(place)
+  return parts.join(" · ")
+}
+
 // When a family event takes place: "Samedi 17 – dimanche 18 octobre" (all-day, UTC dates shown as is)
 // or "Mercredi 14 octobre, 19:00 – 21:00" (device timezone).
 export function formatEventWhen(
@@ -99,9 +140,7 @@ export function formatEventWhen(
 ) {
   const options = { weekday: "long", day: "numeric", month: "long" } as const
   if (event.allDay) {
-    const utc = (d: Date) =>
-      new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
-    const [start, end] = [utc(event.startsAt), utc(event.endsAt)]
+    const [start, end] = [utcDay(event.startsAt), utcDay(event.endsAt)]
     return capitalize(
       start.getTime() === end.getTime()
         ? formatDate(options, start)

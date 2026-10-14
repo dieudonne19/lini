@@ -29,6 +29,7 @@ export type EventSummary = {
   allDay: boolean
   status: EventStatus
   createdByName: string | null
+  createdByColor: string | null
   // The viewer's own answer ("pending" until they answer).
   myAnswer: RsvpStatus
 }
@@ -57,7 +58,9 @@ const NOT_FOUND = { ok: false, reason: "not-found" } as const
 const FORBIDDEN = { ok: false, reason: "forbidden" } as const
 const ALREADY_HANDLED = { ok: false, reason: "already-handled" } as const
 
-const withAuthor = { createdBy: { select: { name: true } } } as const
+const withAuthor = {
+  createdBy: { select: { name: true, color: true } },
+} as const
 
 // The event, if it is in the viewer's family and the viewer may see it.
 async function findVisible(viewer: EventViewer, id: string) {
@@ -120,6 +123,7 @@ export async function getEvent(
     status: event.status,
     createdById: event.createdById,
     createdByName: event.createdBy?.name ?? null,
+    createdByColor: event.createdBy?.color ?? null,
     validatedAt: event.validatedAt,
     answers,
     myAnswer,
@@ -161,6 +165,7 @@ export async function listEvents(viewer: EventViewer, now = new Date()) {
     allDay: event.allDay,
     status: event.status,
     createdByName: event.createdBy?.name ?? null,
+    createdByColor: event.createdBy?.color ?? null,
     myAnswer: myAnswers.get(event.id) ?? "pending",
   })
   const over = confirmed.filter((event) => hasEnded(event, now))

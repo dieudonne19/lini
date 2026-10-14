@@ -5,6 +5,7 @@ import { Plus } from "lucide-react"
 import Link from "next/link"
 
 import { reviewProposalAction } from "@/app/evenements/actions"
+import { AnswerIcon } from "@/components/answer-icon"
 import { CalendarSkeleton } from "@/components/calendar-skeleton"
 import { EventList } from "@/components/event-list"
 import { ProposalActions } from "@/components/proposal-actions"
@@ -36,17 +37,17 @@ export function EventsView({
 
   if (!isClient) return <CalendarSkeleton label="Chargement des événements…" />
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">
           Événements
         </h1>
         <Link
           href="/evenements/nouveau"
-          className={buttonVariants({ className: "h-11" })}
+          className={buttonVariants({ size: "lg", className: "h-11" })}
         >
           <Plus aria-hidden />
-          {isParent ? "Nouvel événement" : "Proposer un événement"}
+          {isParent ? "Créer un événement" : "Proposer un événement"}
         </Link>
       </div>
 
@@ -63,11 +64,13 @@ export function EventsView({
         <EventList
           title={isParent ? "À valider" : "Mes propositions"}
           events={proposals}
-          note={(event) =>
-            isParent
-              ? `Proposé par ${event.createdByName ?? "un membre"}`
-              : "En attente de validation par un parent"
-          }
+          note={(event) => (
+            <span className="text-sm font-medium">
+              {isParent
+                ? `Proposé par ${event.createdByName ?? "un membre"}`
+                : "En attente de validation par un parent"}
+            </span>
+          )}
           renderActions={
             isParent
               ? (event) => (
@@ -89,7 +92,12 @@ export function EventsView({
             ? "Aucun événement à venir. Crée-en un pour réunir la famille."
             : "Aucun événement à venir."
         }
-        note={(event) => MY_ANSWER_NOTES[event.myAnswer]}
+        note={(event) => (
+          <span className="inline-flex items-center gap-1.5">
+            <AnswerIcon status={event.myAnswer} className="size-5" />
+            {MY_ANSWER_NOTES[event.myAnswer]}
+          </span>
+        )}
       />
       {past.length > 0 && <EventList title="Passés" events={past} />}
     </div>
