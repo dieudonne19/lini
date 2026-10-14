@@ -17,7 +17,6 @@ export const CTA_MICRO =
   "Sans mot de passe · Un lien personnel pour chaque membre"
 
 export const HERO = {
-  tag: "Agenda partagé de la maison",
   title: "Trouve enfin le moment où toute la famille est libre.",
   lead: "Travail, école, activités : chacun a son emploi du temps, et se voir finit par devenir impossible. Lini réunit les journées de toute la famille et te montre quand tout le monde est libre.",
 }

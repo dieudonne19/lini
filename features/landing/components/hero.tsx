@@ -1,5 +1,6 @@
 import { HERO } from "../data/content"
 import { CtaBlock } from "./cta-block"
+import { FamilyPhoto } from "./illustrations/family-photo"
 import { HeroIllustration } from "./illustrations/hero-illustration"
 import { DayDemo, WeekDemo } from "./week-demo"
 
@@ -11,12 +12,10 @@ export function Hero() {
     >
       <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,500px)] md:gap-12">
         <div>
-          <span className="inline-flex items-center rounded-full bg-card px-3.5 py-1.5 text-sm font-medium text-muted-foreground ring-1 ring-foreground/10">
-            {HERO.tag}
-          </span>
+          <FamilyPhoto className="h-auto w-36 md:w-44" />
           <h1
             id="titre-hero"
-            className="mt-6 font-heading text-[clamp(2.5rem,5vw,4rem)] leading-[1.08] font-semibold tracking-[-0.04em] text-balance"
+            className="-mt-1 font-heading text-[clamp(2.5rem,5vw,4rem)] leading-[1.08] font-semibold tracking-[-0.04em] text-balance"
           >
             {HERO.title}
           </h1>
