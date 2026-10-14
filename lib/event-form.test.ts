@@ -8,6 +8,8 @@ import {
   readEventFields,
   toEventFormValues,
   toEventPayload,
+  whenFromSlot,
+  whenOf,
   type EventFields,
 } from "@/lib/event-form"
 
@@ -161,6 +163,59 @@ describe("eventTimesFromFields", () => {
         })
       )
     ).toBeNull()
+  })
+})
+
+describe("whenFromSlot and whenOf", () => {
+  it("fills a single local day from the start to the end of the slot", () => {
+    const slot = {
+      start: new Date(2026, 9, 24, 8),
+      end: new Date(2026, 9, 24, 22),
+    }
+    expect(whenFromSlot(slot)).toEqual({
+      startDate: "2026-10-24",
+      endDate: "",
+      startTime: "08:00",
+      endTime: "22:00",
+      allDay: false,
+    })
+  })
+
+  it("gives back exactly the slot once the form is turned into an event, in several timezones and across a clock change", () => {
+    for (const tz of [
+      "Europe/Paris",
+      "America/Los_Angeles",
+      "Pacific/Auckland",
+      "Indian/Antananarivo",
+    ]) {
+      process.env.TZ = tz
+      for (const day of [24, 25]) {
+        // 25 October 2026: the clocks go back in Paris.
+        const slot = {
+          start: new Date(2026, 9, day, 10, 30),
+          end: new Date(2026, 9, day, 13),
+        }
+        expect(
+          eventTimesFromFields(whenFromSlot(slot)),
+          `${tz} ${day}`
+        ).toEqual({
+          startsAt: slot.start,
+          endsAt: slot.end,
+          allDay: false,
+        })
+      }
+    }
+    process.env.TZ = "Europe/Paris"
+  })
+
+  it("keeps only the dates and times of a whole event's fields", () => {
+    expect(Object.keys(whenOf(fields())).sort()).toEqual([
+      "allDay",
+      "endDate",
+      "endTime",
+      "startDate",
+      "startTime",
+    ])
   })
 })
 

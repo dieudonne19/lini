@@ -95,3 +95,15 @@ export function findFreeSlots(
 }
 
 const maxDate = (a: Date, b: Date) => (a > b ? a : b)
+
+// The slots grouped by local day, in order: what the list of free slots shows under each day's heading.
+export function groupSlotsByDay(slots: FreeSlot[]) {
+  const days = new Map<number, { day: Date; slots: FreeSlot[] }>()
+  for (const slot of slots) {
+    const day = startOfDay(slot.start)
+    const group = days.get(day.getTime()) ?? { day, slots: [] }
+    group.slots.push(slot)
+    days.set(day.getTime(), group)
+  }
+  return [...days.values()]
+}

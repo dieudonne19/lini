@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, it } from "vitest"
 
-import { findFreeSlots } from "@/lib/free-slots"
+import { findFreeSlots, groupSlotsByDay } from "@/lib/free-slots"
 import {
   allDayActivity,
   busy,
@@ -227,5 +227,17 @@ describe("findFreeSlots", () => {
     const start = performance.now()
     findFreeSlots(schedule, NOW)
     expect(performance.now() - start).toBeLessThan(100)
+  })
+
+  it("groups the slots by local day, in order, each day once", () => {
+    const slots = findFreeSlots(
+      scheduleOf([full("Déjeuner", at(16, 12), at(16, 13))]),
+      NOW,
+      { days: 4 }
+    )
+    const groups = groupSlotsByDay(slots)
+    expect(groups.map((g) => g.day.getDate())).toEqual([14, 15, 16, 17])
+    expect(groups.map((g) => g.slots.length)).toEqual([1, 1, 2, 1])
+    expect(groupSlotsByDay([])).toEqual([])
   })
 })

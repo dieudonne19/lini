@@ -19,6 +19,8 @@ type EventFormProps = {
   // The dates and times are held by the caller, which reads them (conflicts) and fills them (free slots).
   when: WhenFields
   onWhenChange: (patch: Partial<WhenFields>) => void
+  // Shown right above the dates and times, e.g. the free slots to choose from.
+  whenHelp?: React.ReactNode
   // Shown right under the dates and times, e.g. who is busy then.
   whenExtras?: React.ReactNode
   // Said above the fields, e.g. that a parent must validate a proposal first.
@@ -35,6 +37,7 @@ function EventForm({
   initialValues,
   when,
   onWhenChange,
+  whenHelp,
   whenExtras,
   intro,
   submitLabel,
@@ -81,6 +84,7 @@ function EventForm({
         defaultValue={values?.description}
         errors={errors?.description}
       />
+      {whenHelp}
       <div className="grid grid-cols-2 gap-4">
         <TextField
           id="startDate"

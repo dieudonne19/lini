@@ -140,3 +140,27 @@ export function eventTimesFromFields(when: WhenFields) {
   const { startsAt, endsAt, allDay } = parsed.data
   return { startsAt, endsAt, allDay }
 }
+
+// The dates and times of the form, from the fields of a whole event.
+export function whenOf(fields: EventFields): WhenFields {
+  const { startDate, endDate, startTime, endTime, allDay } = fields
+  return { startDate, endDate, startTime, endTime, allDay }
+}
+
+// What to fill in the form when a free slot is chosen: a single local day, from the start to the end of the
+// slot, with times (not "all day").
+export function whenFromSlot({
+  start,
+  end,
+}: {
+  start: Date
+  end: Date
+}): WhenFields {
+  return {
+    startDate: localDate(start),
+    endDate: "",
+    startTime: localTime(start),
+    endTime: localTime(end),
+    allDay: false,
+  }
+}
