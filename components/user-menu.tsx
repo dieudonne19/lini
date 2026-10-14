@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronDown, LogOut } from "lucide-react"
+import { BellOff, ChevronDown, LogOut } from "lucide-react"
 
 import { MemberAvatar } from "@/components/member-avatar"
 import {
@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { usePushNotifications } from "@/hooks/use-push-notifications"
 import type { Role } from "@/lib/generated/prisma/client"
 
 const ROLE_LABELS: Record<Role, string> = { parent: "Parent", child: "Enfant" }
@@ -25,6 +26,8 @@ type UserMenuProps = {
 // card and holds the account actions. Settings, help and the way back to the landing page go here, as
 // <DropdownMenuItem render={<Link href="…" />}> before the separator, when their pages exist.
 function UserMenu({ name, color, role, logoutAction }: UserMenuProps) {
+  // Only reads whether notifications are on here: the page that offers them does the rest.
+  const push = usePushNotifications({ sync: false })
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -56,6 +59,16 @@ function UserMenu({ name, color, role, logoutAction }: UserMenuProps) {
           </p>
         </div>
         <DropdownMenuSeparator />
+        {push.status === "on" && (
+          <DropdownMenuItem
+            onClick={push.disable}
+            disabled={push.pending}
+            className="min-h-11 w-full text-base"
+          >
+            <BellOff aria-hidden />
+            Désactiver les notifications
+          </DropdownMenuItem>
+        )}
         {/* The menu must not close on click: it would remove the form before the browser submits it. */}
         <form action={logoutAction}>
           <DropdownMenuItem

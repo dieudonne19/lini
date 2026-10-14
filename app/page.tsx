@@ -2,10 +2,9 @@ import { Suspense } from "react"
 import type { Metadata } from "next"
 
 import { getSessionMember } from "@/app/session"
-import { InstallPrompt } from "@/components/install-prompt"
-import { NotificationsPrompt } from "@/components/notifications-prompt"
 import { CalendarSkeleton } from "@/components/calendar-skeleton"
 import { MonthView } from "@/components/month-view"
+import { WeekPromos } from "@/components/week-promos"
 import { WeekView } from "@/components/week-view"
 import {
   monthWindow,
@@ -78,15 +77,16 @@ export default async function Page({
   const monday = month ? undefined : parseWeekParam(du)
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-8">
-      <InstallPrompt />
-      <NotificationsPrompt />
-      <Suspense
-        key={month ?? monday ?? "current-week"}
-        fallback={<CalendarSkeleton />}
-      >
-        <CalendarData member={member} month={month} monday={monday} />
-      </Suspense>
-    </main>
+    <>
+      <WeekPromos />
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-8">
+        <Suspense
+          key={month ?? monday ?? "current-week"}
+          fallback={<CalendarSkeleton />}
+        >
+          <CalendarData member={member} month={month} monday={monday} />
+        </Suspense>
+      </main>
+    </>
   )
 }
