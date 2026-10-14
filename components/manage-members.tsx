@@ -47,8 +47,7 @@ export function ManageMembers({
           link={newLink}
           copied={copied}
           onCopy={() => copy(newLink)}
-          continueLabel="Fermer"
-          onContinue={dismiss}
+          onDismiss={dismiss}
         >
           L&apos;ancien lien ne fonctionne plus. Envoie-lui ce nouveau lien : il
           ne s&apos;affichera plus.

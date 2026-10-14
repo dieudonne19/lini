@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import type { MemberView } from "@/lib/members"
-import { Settings, SettingsIcon, XIcon } from "lucide-react"
+import { SettingsIcon, XIcon } from "lucide-react"
 
 type MemberActionsProps = {
   member: MemberView
