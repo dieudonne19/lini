@@ -16,7 +16,7 @@ export function PhoneMockup() {
     >
       <div className="mx-auto mb-3.5 h-1.5 w-[72px] rounded-full bg-border" />
       <div className="flex items-center justify-between">
-        <Logo className="h-6 w-auto" />
+        <Logo className="h-8 w-auto" />
         <MemberAvatar
           letter="F"
           color={M.green}

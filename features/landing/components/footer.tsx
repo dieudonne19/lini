@@ -11,7 +11,7 @@ const ICONS = {
 export function Footer() {
   return (
     <footer className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-4 px-4 py-10 text-sm text-muted-foreground md:px-6">
-      <Logo label="Lini" className="h-7 w-auto" />
+      <Logo label="Lini" className="h-10 w-auto" />
       <p>{FOOTER_TEXT}</p>
       <ul aria-label="Contact" className="flex items-center gap-1">
         {CONTACT_LINKS.map(({ label, href }) => {

@@ -9,7 +9,7 @@ export const contentType = "image/png"
 
 // The picture shown when the link is shared: the Lini logo and its promise, on the app's background color.
 export default async function Image() {
-  const logo = await readFile(join(process.cwd(), "public/lini-logo.svg"))
+  const logo = await readFile(join(process.cwd(), "public/lini-logo-A.svg"))
   return new ImageResponse(
     <div
       style={{
@@ -27,8 +27,8 @@ export default async function Image() {
       {/* eslint-disable-next-line @next/next/no-img-element -- satori renders plain <img> tags */}
       <img
         src={`data:image/svg+xml;base64,${logo.toString("base64")}`}
-        width={520}
-        height={180}
+        width={424}
+        height={240}
         alt=""
       />
       <div style={{ display: "flex", fontSize: 52, fontWeight: 700 }}>

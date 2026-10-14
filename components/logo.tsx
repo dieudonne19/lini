@@ -6,10 +6,10 @@ function Logo() {
   return (
     <Link href="/" className="inline-flex rounded-lg">
       <Image
-        src="/lini-logo.svg"
+        src="/lini-logo-A.svg"
         alt="Lini"
-        width={104}
-        height={36}
+        width={88}
+        height={50}
         priority
         unoptimized
       />

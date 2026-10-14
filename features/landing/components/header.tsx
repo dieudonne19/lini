@@ -12,7 +12,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-[1160px] items-center justify-between gap-4 px-4 md:h-20 md:px-6">
         <Link href="/" aria-label="Lini, accueil">
-          <Logo className="h-9 w-auto" />
+          <Logo className="h-12 w-auto" />
         </Link>
         <nav
           aria-label="Navigation principale"

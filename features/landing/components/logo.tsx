@@ -4,48 +4,43 @@ type LogoProps = {
   label?: string
 }
 
-/** Logo Lini : la maison aux quatre pastilles et le mot « lini » dessiné au trait. */
+const INK = "#1F2540"
+
+/** Logo Lini : le mot « lini » dessiné au trait, dont le « n » est une maison, avec sa porte. */
 export function Logo({ className, label }: LogoProps) {
   return (
     <svg
-      viewBox="0 0 370 128"
+      viewBox="156 14 208 118"
       className={className}
       {...(label
         ? { role: "img", "aria-label": label }
         : { "aria-hidden": true })}
     >
-      <path
-        d="M64 12 L116 56 V112 H12 V56 Z"
-        fill="#fff"
-        stroke="#1F2540"
-        strokeWidth={10}
-        strokeLinejoin="round"
-      />
-      <circle cx={43} cy={67} r={10} fill="#3D6DF2" />
-      <circle cx={85} cy={67} r={10} fill="#F2A93B" />
-      <circle cx={43} cy={91} r={10} fill="#2FB67C" />
-      <circle
-        cx={85}
-        cy={91}
-        r={7.5}
-        fill="none"
-        stroke="#B65CF0"
-        strokeWidth={5}
-      />
       <g
         fill="none"
-        stroke="#1F2540"
+        stroke={INK}
         strokeWidth={12}
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M176 34 V112" />
-        <path d="M214 62 V112" />
-        <path d="M254 112 V84 a22 22 0 0 1 44 0 V112" />
-        <path d="M338 62 V112" />
+        <path d="M176 34V112" />
+        <path d="M214 62V112" />
+        <path d="M342 62V112" />
       </g>
+      <path d="M256 118V86a20 20 0 0 1 40 0V118Z" fill="#E4EBFD" />
+      <path
+        d="M250 112V86a26 26 0 0 1 52 0V112"
+        fill="none"
+        stroke={INK}
+        strokeWidth={12}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <rect x={244} y={56} width={12} height={46} rx={3.5} fill={INK} />
+      <path d="M268.5 118V101a7.5 7.5 0 0 1 15 0V118Z" fill="#F2A93B" />
+      <circle cx={280.6} cy={109} r={1.1} fill={INK} />
       <circle cx={214} cy={36} r={8} fill="#3D6DF2" />
-      <circle cx={338} cy={36} r={8} fill="#F2A93B" />
+      <circle cx={342} cy={36} r={8} fill="#F2A93B" />
     </svg>
   )
 }
