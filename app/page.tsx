@@ -2,8 +2,6 @@ import { Suspense } from "react"
 
 import { getSessionMember } from "@/app/session"
 import { CalendarSkeleton } from "@/components/calendar-skeleton"
-import { FirstRun } from "@/components/first-run"
-import { LinkRequired } from "@/components/link-required"
 import { MonthView } from "@/components/month-view"
 import { WeekView } from "@/components/week-view"
 import {
@@ -12,7 +10,6 @@ import {
   parseWeekParam,
   weekWindow,
 } from "@/lib/calendar-params"
-import { hasFamily } from "@/lib/families"
 import { listFamilySchedule } from "@/lib/schedule"
 
 type Member = NonNullable<Awaited<ReturnType<typeof getSessionMember>>>
@@ -39,35 +36,28 @@ async function CalendarData({
   return <WeekView schedule={schedule} monday={monday} />
 }
 
-// A signed-in member lands on the week of the family. Without a link: ask for one, or create the family.
-// The same <main> and FirstRun stay mounted when the family has just been created (the one-time link stays).
+// A signed-in member lands on the week of the family. A visitor without a session gets the landing page,
+// which is empty for now: the way in (create the family, open a personal link) lives at /commencer.
 export default async function Page({
   searchParams,
 }: {
   searchParams: Promise<{ du?: string; mois?: string }>
 }) {
   const member = await getSessionMember()
-  const canCreate = !member && !(await hasFamily())
+  if (!member) return <main className="flex-1" />
+
   const { du, mois } = await searchParams
   const month = parseMonthParam(mois)
   const monday = month ? undefined : parseWeekParam(du)
 
   return (
-    <main
-      className={`mx-auto flex w-full flex-1 flex-col px-4 ${member ? "max-w-5xl py-8" : "max-w-md justify-center py-12"}`}
-    >
-      <FirstRun canCreate={canCreate}>
-        {member ? (
-          <Suspense
-            key={month ?? monday ?? "current-week"}
-            fallback={<CalendarSkeleton />}
-          >
-            <CalendarData member={member} month={month} monday={monday} />
-          </Suspense>
-        ) : (
-          <LinkRequired />
-        )}
-      </FirstRun>
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-8">
+      <Suspense
+        key={month ?? monday ?? "current-week"}
+        fallback={<CalendarSkeleton />}
+      >
+        <CalendarData member={member} month={month} monday={monday} />
+      </Suspense>
     </main>
   )
 }

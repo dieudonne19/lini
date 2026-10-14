@@ -5,7 +5,7 @@ import { logout } from "@/app/actions"
 import { getSessionMember } from "@/app/session"
 import { AppNavContainer } from "@/components/app-nav-container"
 import { Logo } from "@/components/logo"
-import { UserBadge } from "@/components/user-badge"
+import { UserMenu } from "@/components/user-menu"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 
@@ -46,7 +46,7 @@ export default async function RootLayout({
                   canManageFamily={member.role === "parent"}
                   className="order-last w-full sm:order-none sm:w-auto"
                 />
-                <UserBadge
+                <UserMenu
                   name={member.name}
                   color={member.color}
                   role={member.role}

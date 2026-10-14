@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { useActionState } from "react"
 
 import { createFamily } from "@/app/actions"
@@ -18,6 +19,7 @@ export function FirstRun({
   canCreate: boolean
   children: React.ReactNode
 }) {
+  const router = useRouter()
   const [state, action, pending] = useActionState(createFamily, null)
   const { copied, copy } = useCopy()
 
@@ -33,7 +35,7 @@ export function FirstRun({
           copied={copied}
           onCopy={() => copy(link)}
           continueLabel="Ouvrir la semaine"
-          onContinue={() => window.location.reload()}
+          onContinue={() => router.push("/")}
         >
           Voici ton lien personnel. Il te connecte sans mot de passe et ne
           s&apos;affichera plus : copie-le maintenant. Quiconque a ce lien est

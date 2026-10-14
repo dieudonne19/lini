@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import type { MemberView } from "@/lib/members"
+import { Settings, SettingsIcon, XIcon } from "lucide-react"
 
 type MemberActionsProps = {
   member: MemberView
@@ -24,7 +25,8 @@ function MemberActions({
   const makeParent = member.role === "child"
   return (
     <details>
-      <summary className="inline-flex h-11 cursor-pointer items-center text-sm font-medium underline-offset-4 hover:underline">
+      <summary className="inline-flex h-11 cursor-pointer items-center gap-2 text-sm font-medium underline-offset-4 hover:underline">
+        <SettingsIcon className="hidden size-4 shrink-0 sm:block" />
         Gérer {member.name}
       </summary>
       <form action={action} className="mt-2 flex flex-col gap-2">
@@ -57,7 +59,8 @@ function MemberActions({
               {makeParent ? "Passer en parent" : "Passer en enfant"}
             </Button>
             <details>
-              <summary className="inline-flex h-11 cursor-pointer items-center text-sm font-medium text-destructive underline-offset-4 hover:underline">
+              <summary className="inline-flex h-11 cursor-pointer items-center gap-2 text-sm font-medium text-destructive underline-offset-4 hover:underline">
+                <XIcon className="hidden size-4 shrink-0 sm:block" />
                 Retirer de la famille
               </summary>
               <div className="mt-2 flex flex-col gap-3 rounded-lg bg-destructive/10 p-3">
