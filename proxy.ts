@@ -15,6 +15,8 @@ export function proxy(request: NextRequest) {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' blob: data:",
     "font-src 'self'",
+    // The service worker of the notifications. Apart from script-src, whose 'strict-dynamic' ignores 'self'.
+    "worker-src 'self'",
     `connect-src 'self'${dev ? " ws:" : ""}`,
     "object-src 'none'",
     "base-uri 'self'",

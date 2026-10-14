@@ -38,6 +38,11 @@ export default function Page() {
             eux-mêmes ne sont pas conservés.
           </li>
           <li>
+            Si tu actives les notifications : l&apos;adresse d&apos;envoi de ton
+            appareil, fournie par ton navigateur. Elle est supprimée quand tu
+            désactives les notifications.
+          </li>
+          <li>
             Pour limiter les abus : une empreinte de l&apos;adresse de
             connexion, gardée au plus une heure. L&apos;adresse elle-même
             n&apos;est pas conservée.
@@ -65,6 +70,16 @@ export default function Page() {
           est nécessaire au fonctionnement : il n&apos;y a donc pas de bandeau à
           accepter. Lini n&apos;utilise ni mesure d&apos;audience, ni publicité,
           et ne revend rien.
+        </p>
+      </Section>
+
+      <Section title="Notifications">
+        <p>
+          Les notifications passent par le service de ton navigateur (Google,
+          Apple, Mozilla ou Microsoft). Lini lui envoie le titre de
+          l&apos;événement et le prénom du membre concerné, rien d&apos;autre.
+          Tu peux les désactiver à tout moment depuis la page Semaine, ou dans
+          les réglages de ton navigateur.
         </p>
       </Section>
 

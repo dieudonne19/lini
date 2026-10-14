@@ -402,7 +402,7 @@ describe.skipIf(!process.env.DATABASE_URL)("events", () => {
           id,
           input({ title: "Autre titre", place: "Jardin" })
         )
-      ).toEqual({ ok: true })
+      ).toEqual({ ok: true, datesChanged: false })
       const detail = (await getEvent(asViewer(parent), id))!
       expect(detail).toMatchObject({ title: "Autre titre", place: "Jardin" })
       expect(detail.answers.find((a) => a.name === "Enfant")?.status).toBe(
@@ -414,13 +414,22 @@ describe.skipIf(!process.env.DATABASE_URL)("events", () => {
       const { parent, child } = await setupFamily()
       const { id } = await createEvent(asViewer(parent), input())
       await answerEvent(asViewer(child), id, "yes", BEFORE)
+      await db.familyEvent.update({
+        where: { id },
+        data: { reminderSentAt: new Date() },
+      })
       const moved = input({
         startsAt: "2026-10-18T17:00:00.000Z",
         endsAt: "2026-10-18T20:00:00.000Z",
       })
       expect(await updateEvent(asViewer(parent), id, moved)).toEqual({
         ok: true,
+        datesChanged: true,
       })
+      // New dates mean the reminder is due again.
+      expect(
+        (await db.familyEvent.findUnique({ where: { id } }))!.reminderSentAt
+      ).toBeNull()
       const detail = (await getEvent(asViewer(parent), id))!
       expect(detail.answers.every((a) => a.status === "pending")).toBe(true)
       expect(await db.rsvp.count({ where: { eventId: id } })).toBe(0)

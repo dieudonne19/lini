@@ -83,20 +83,22 @@ model Activity {
 }
 
 model FamilyEvent {
-  id            String      @id @default(cuid())
-  familyId      String
+  id             String      @id @default(cuid())
+  familyId       String
   // SetNull: a confirmed event outlives its creator. Proposals are deleted by the
   // "remove member" action, not by the schema.
-  createdById   String?
-  status        EventStatus
-  validatedById String?
-  validatedAt   DateTime?
-  title         String
-  description   String?
-  startsAt      DateTime
-  endsAt        DateTime
-  allDay        Boolean     @default(false)
-  place         String?
+  createdById    String?
+  status         EventStatus
+  validatedById  String?
+  validatedAt    DateTime?
+  title          String
+  description    String?
+  startsAt       DateTime
+  endsAt         DateTime
+  allDay         Boolean     @default(false)
+  place          String?
+  // Set when the reminder of the day before is sent (or being sent), so that it goes out once. Reset if the dates change.
+  reminderSentAt DateTime?
 
   family      Family  @relation(fields: [familyId], references: [id], onDelete: Cascade)
   createdBy   Member? @relation("EventCreator", fields: [createdById], references: [id], onDelete: SetNull)

@@ -49,7 +49,7 @@ export type EventDetail = EventSummary & {
 }
 
 export type EventResult =
-  | { ok: true }
+  | { ok: true; datesChanged?: boolean }
   | { ok: false; reason: "not-found" | "forbidden" | "already-handled" }
 
 const OK = { ok: true } as const
@@ -188,9 +188,13 @@ export function updateEvent(
       event.startsAt.getTime() !== input.startsAt.getTime() ||
       event.endsAt.getTime() !== input.endsAt.getTime() ||
       event.allDay !== input.allDay
-    await tx.familyEvent.update({ where: { id }, data: input })
+    // New dates mean a new reminder, and everyone answers again.
+    await tx.familyEvent.update({
+      where: { id },
+      data: datesChanged ? { ...input, reminderSentAt: null } : input,
+    })
     if (datesChanged) await tx.rsvp.deleteMany({ where: { eventId: id } })
-    return OK
+    return { ...OK, datesChanged }
   })
 }
 

@@ -15,14 +15,24 @@ Portée : **Production** uniquement, sauf mention contraire. Ne mets pas la base
 - [ ] `DIRECT_URL` ajoutée
 - [ ] `SESSION_SECRET` ajoutée (un secret différent de celui de dev)
 
-## À prévoir plus tard (ne pas oublier)
+## Notifications (étape 7)
 
-| Variable | Étape | Remarque |
+Sans ces variables, l'application marche mais n'envoie aucune notification (rien n'est signalé comme échoué).
+Crée une **nouvelle** paire de clés pour la production : `pnpm exec web-push generate-vapid-keys`. Ne réutilise pas celle de dev.
+
+| Variable | Valeur | Remarque |
 | --- | --- | --- |
-| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | 7 (notifications) | Clé publique Web Push |
-| `VAPID_PRIVATE_KEY` | 7 | Clé privée Web Push, secrète |
-| `VAPID_SUBJECT` | 7 | `mailto:` de contact, requis par Web Push |
-| `CRON_SECRET` | 7 (rappel de la veille) | Protège l'appel du cron quotidien |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Clé publique de la paire | Lue au **build** : redéploie après l'avoir ajoutée |
+| `VAPID_PRIVATE_KEY` | Clé privée de la paire | Secrète |
+| `VAPID_SUBJECT` | L'adresse du site, `https://…` | Donnée aux services de push (Google, Apple, Mozilla). Pas d'adresse e-mail personnelle. |
+| `CRON_SECRET` | 32 caractères aléatoires minimum | Protège `/api/cron/reminders`. Vercel l'envoie tout seul au cron défini dans `vercel.json`. |
+
+- [ ] `NEXT_PUBLIC_VAPID_PUBLIC_KEY` ajoutée
+- [ ] `VAPID_PRIVATE_KEY` ajoutée
+- [ ] `VAPID_SUBJECT` ajoutée
+- [ ] `CRON_SECRET` ajoutée
+
+Le rappel de la veille tourne une fois par jour à 16 h UTC (`vercel.json`). Une migration ajoute `FamilyEvent.reminderSentAt` au prochain déploiement.
 
 ## Côté GitHub (CI)
 
