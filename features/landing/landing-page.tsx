@@ -7,6 +7,7 @@ import { Header } from "./components/header"
 import { Hero } from "./components/hero"
 import { SvgDefs } from "./components/illustrations/svg-defs"
 import { Problem } from "./components/problem"
+import { SmoothScroll } from "./components/smooth-scroll"
 import { Steps } from "./components/steps"
 
 /**
@@ -18,6 +19,7 @@ import { Steps } from "./components/steps"
 export function LandingPage() {
   return (
     <div className="overflow-x-clip bg-background text-foreground">
+      <SmoothScroll />
       <SvgDefs />
       <a
         href="#contenu"
