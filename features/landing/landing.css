@@ -14,7 +14,22 @@
   }
 }
 
+/* Si le script qui révèle les textes du héros n'arrive jamais, ils s'affichent seuls après 3 s. */
+@keyframes hero-copy-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  /* ---- Textes du héros : cachés jusqu'à ce que HeroCopy (GSAP SplitText) les révèle ---- */
+  [data-hero-title],
+  [data-hero-lead],
+  [data-hero-cta] {
+    visibility: hidden;
+    animation: hero-copy-failsafe 0s linear 3s forwards;
+  }
+
   /* ---- Apparition au défilement (composant Reveal) ---- */
   [data-reveal] {
     transition:
