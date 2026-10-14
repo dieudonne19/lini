@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useState } from "react"
+import { useActionState, useMemo, useState } from "react"
 
 import {
   answerEventAction,
@@ -8,7 +8,9 @@ import {
   reviewProposalAction,
 } from "@/app/evenements/actions"
 import { CalendarSkeleton } from "@/components/calendar-skeleton"
+import { ConflictNotice } from "@/components/conflict-notice"
 import { EventDetail } from "@/components/event-detail"
+import { useEventConflicts } from "@/hooks/use-event-conflicts"
 import { useIsClient } from "@/hooks/use-is-client"
 import {
   canAnswer,
@@ -46,8 +48,22 @@ export function EventDetailView({ event, viewer }: EventDetailViewProps) {
     null
   )
 
-  if (!isClient) return <CalendarSkeleton label="Chargement de l'événement…" />
   const review = canValidate(viewer, event)
+  // A parent sees who is busy before deciding; nobody else needs it, so nothing is loaded for them.
+  const times = useMemo(
+    () =>
+      review
+        ? {
+            startsAt: event.startsAt,
+            endsAt: event.endsAt,
+            allDay: event.allDay,
+          }
+        : null,
+    [review, event.startsAt, event.endsAt, event.allDay]
+  )
+  const conflicts = useEventConflicts(times)
+
+  if (!isClient) return <CalendarSkeleton label="Chargement de l'événement…" />
   return (
     <EventDetail
       event={event}
@@ -65,6 +81,16 @@ export function EventDetailView({ event, viewer }: EventDetailViewProps) {
       answerAction={answerAction}
       reviewAction={reviewAction}
       deleteAction={deleteAction}
+      conflicts={
+        review && (
+          <ConflictNotice
+            status={conflicts.status}
+            conflicts={conflicts.conflicts}
+            onRetry={conflicts.retry}
+            continueText="Tu peux valider quand même."
+          />
+        )
+      }
       pending={answering || reviewing || deleting}
       message={
         answerState?.message ?? reviewState?.message ?? deleteState?.message

@@ -25,6 +25,8 @@ type EventDetailProps = {
   answerAction: ServerAction
   reviewAction: ServerAction
   deleteAction: () => void
+  // Shown to a parent above the decision on a proposal: who is busy at that time.
+  conflicts?: React.ReactNode
   pending: boolean
   message?: string
 }
@@ -38,6 +40,7 @@ function EventDetail({
   answerAction,
   reviewAction,
   deleteAction,
+  conflicts,
   pending,
   message,
 }: EventDetailProps) {
@@ -90,6 +93,7 @@ function EventDetail({
       {can.review && (
         <section className="flex flex-col gap-3">
           <h2 className="text-lg font-semibold">Ta décision</h2>
+          {conflicts}
           <ProposalActions
             eventId={event.id}
             action={reviewAction}

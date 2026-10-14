@@ -7,11 +7,18 @@ type ConflictNoticeProps = {
   status: "idle" | "loading" | "error" | "ready"
   conflicts: ScheduleMember[]
   onRetry?: () => void
+  // What the person is told they may do anyway (continue typing, or validate a proposal).
+  continueText?: string
 }
 
 // Pure: who is busy during the event being typed. Only members are named, never what they are doing.
 // It is information, not a block: the person can go on. The region is announced politely as it changes.
-function ConflictNotice({ status, conflicts, onRetry }: ConflictNoticeProps) {
+function ConflictNotice({
+  status,
+  conflicts,
+  onRetry,
+  continueText = "Tu peux continuer quand même.",
+}: ConflictNoticeProps) {
   return (
     <div aria-live="polite">
       {status === "loading" && (
@@ -23,7 +30,7 @@ function ConflictNotice({ status, conflicts, onRetry }: ConflictNoticeProps) {
         <Alert variant="destructive" role="alert">
           <AlertTitle>Impossible de vérifier les agendas</AlertTitle>
           <AlertDescription className="flex flex-col items-start gap-2">
-            Tu peux continuer quand même.
+            {continueText}
             {onRetry && (
               <Button
                 type="button"
@@ -59,7 +66,7 @@ function ConflictNotice({ status, conflicts, onRetry }: ConflictNoticeProps) {
                 </li>
               ))}
             </ul>
-            <span>Tu peux continuer quand même.</span>
+            <span>{continueText}</span>
           </AlertDescription>
         </Alert>
       )}
