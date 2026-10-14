@@ -3,11 +3,10 @@
  * Les espaces insécables ( ) tiennent « : », « ? » et les guillemets collés au mot.
  */
 
-export const SITE_TITLE =
-  "Lini : l'agenda familial sans oublis ni doubles réservations"
+export const SITE_TITLE = "Lini : trouve le moment de te retrouver en famille"
 
 export const SITE_DESCRIPTION =
-  "Lini réunit les journées de toute la famille dans un seul agenda : moins d'oublis, pas de double réservation, et des activités privées qui restent privées."
+  "Chacun a son emploi du temps. Lini réunit ceux de toute la famille et te montre quand tout le monde est libre pour se retrouver."
 
 export const CTA_LABEL = "Créer l'agenda de ma famille"
 
@@ -19,36 +18,37 @@ export const CTA_MICRO =
 
 export const HERO = {
   tag: "Agenda partagé de la maison",
-  title: "Chez toi, tout le monde sait qui fait quoi.",
-  lead: "Lini réunit les journées de toute la famille dans un seul agenda. Moins d'oublis, pas de double réservation, et chacun garde ses activités privées pour soi.",
+  title: "Trouve enfin le moment où toute la famille est libre.",
+  lead: "Travail, école, activités : chacun a son emploi du temps, et se voir finit par devenir impossible. Lini réunit les journées de toute la famille et te montre quand tout le monde est libre.",
 }
 
 export const PROBLEM = {
-  title: "Chacun a son planning. Personne ne voit celui des autres.",
+  title:
+    "On voudrait passer du temps ensemble. Mais chacun a son emploi du temps.",
   points: [
     {
-      title: "Chacun note de son côté",
-      text: "Pour savoir qui est libre samedi, il faut poser la question à toute la maison.",
+      title: "Chacun court de son côté",
+      text: "Chacun a sa semaine bien remplie, et personne ne voit celle des autres.",
     },
     {
-      title: "Les messages se perdent",
-      text: "L'invitation au pique-nique disparaît sous les autres messages de la journée.",
+      title: "Se voir demande une enquête",
+      text: "Pour savoir qui est libre samedi, il faut demander à toute la maison, un message après l'autre.",
     },
     {
-      title: "Les surprises arrivent la veille",
-      text: "On découvre qu'un parent travaille ou qu'un enfant a une sortie quand il est déjà trop tard.",
+      title: "Les occasions passent",
+      text: "À force de chercher le bon moment, le repas ou la sortie en famille n'arrive jamais.",
     },
   ],
   pivot:
-    "Lini sert à ça : un seul endroit où chaque membre de la maison voit les journées des autres.",
+    "Lini sert à ça : voir les journées de chacun et trouver le moment où toute la famille peut se retrouver.",
 }
 
 export const GAINS_TITLE = "Ce que ta famille y gagne"
 
 export const GAIN_TEXTS = {
   slots: {
-    title: "Plus d'oublis, plus de doubles réservations",
-    text: "Chacun ajoute ses activités, et tout le monde voit qui est pris et qui est libre. Tu choisis un jour sans poser la question à personne.",
+    title: "Trouve le moment où tout le monde est libre",
+    text: "Chacun ajoute ses activités, et Lini te montre les créneaux où personne n'est pris. Tu choisis sans poser la question à personne.",
   },
   events: {
     title: "Des événements communs sans relancer personne",
@@ -119,3 +119,14 @@ export const FINAL = {
 }
 
 export const FOOTER_TEXT = "Lini, l'agenda partagé de la maison · 2026"
+
+/** Où joindre la personne qui a fait Lini, dans le pied de page. Le nom doit être l'une des clés de ICONS (footer.tsx). */
+export const CONTACT_LINKS = [
+  { label: "GitHub", href: "https://github.com/dieudonne19" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/dieudonn%C3%A9-andrianjato-7b34472a1/",
+  },
+  // Madagascar (+261) : le 0 du numéro local (033 79 691 58) disparaît dans le format international de wa.me.
+  { label: "WhatsApp", href: "https://wa.me/261337969158" },
+] as const
