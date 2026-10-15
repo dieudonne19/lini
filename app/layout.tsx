@@ -69,16 +69,22 @@ export default async function RootLayout({
         fontBody.variable
       )}
     >
-      <body className="flex min-h-svh flex-col">
+      <body
+        className={cn(
+          "flex min-h-svh flex-col",
+          // Room for the navigation bar fixed at the bottom of a phone screen.
+          member && "pb-16 md:pb-0"
+        )}
+      >
         <HideOnLanding when={!member}>
           <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
-            <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-x-6 px-4 py-1.5">
+            <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-x-6 px-4 py-1.5">
               <Logo />
               {member && (
                 <>
                   <AppNavContainer
                     canManageFamily={member.role === "parent"}
-                    className="order-last w-full sm:order-none sm:w-auto"
+                    className="hidden md:flex"
                   />
                   <UserMenu
                     name={member.name}
@@ -92,6 +98,13 @@ export default async function RootLayout({
           </header>
         </HideOnLanding>
         {children}
+        {member && (
+          <AppNavContainer
+            variant="bottom"
+            canManageFamily={member.role === "parent"}
+            className="md:hidden"
+          />
+        )}
       </body>
     </html>
   )
