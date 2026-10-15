@@ -37,9 +37,9 @@ export default async function Page() {
   )
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-10 *:max-w-md">
-      <div className="flex w-full flex-col justify-between gap-4 md:flex-row">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-4 py-10 *:max-w-2xl">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">
           Mon agenda
         </h1>
         <Link
@@ -50,7 +50,7 @@ export default async function Page() {
           Ajouter une activité
         </Link>
       </div>
-      <AgendaView activities={activities} color={member.color} />
+      <AgendaView activities={activities} />
     </main>
   )
 }
