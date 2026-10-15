@@ -1,19 +1,33 @@
 "use client"
 
-import { Bell, Download } from "lucide-react"
+import { Bell, Download, ShieldCheck } from "lucide-react"
 
 import { PromoBar } from "@/components/promo-bar"
 import { useInstall } from "@/hooks/use-install"
 import { usePushNotifications } from "@/hooks/use-push-notifications"
 import { useSnooze } from "@/hooks/use-snooze"
 
-// Container: one invitation at a time under the header. Notifications first; once they are on or put off for a
-// while, the invitation to install the app.
-export function WeekPromos() {
+// Container: one invitation at a time under the header. Safety first: a parent who is alone in the family is asked to
+// add a second one. Then notifications; once they are on or put off for a while, the invitation to install the app.
+export function WeekPromos({ soloParent }: { soloParent: boolean }) {
   const push = usePushNotifications()
   const install = useInstall()
   const notificationsLater = useSnooze("lini:notifications-later")
   const installLater = useSnooze("lini:install-later")
+  const secondParentLater = useSnooze("lini:second-parent-later")
+
+  if (soloParent && !secondParentLater.snoozed)
+    return (
+      <PromoBar
+        tone="warning"
+        icon={ShieldCheck}
+        action={{ label: "Ajouter un parent", href: "/famille" }}
+        onLater={secondParentLater.snooze}
+      >
+        Ajoute un deuxième parent : si tu perds ton lien, lui seul pourra t&apos;en
+        redonner un.
+      </PromoBar>
+    )
 
   if (push.status === "off" && !notificationsLater.snoozed)
     return (

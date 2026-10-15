@@ -5,6 +5,7 @@ import { db } from "@/lib/db"
 import {
   changeRole,
   createMember,
+  isOnlyParent,
   listFamilyMembers,
   regenerateLink,
   removeMember,
@@ -200,5 +201,21 @@ describe.skipIf(!process.env.DATABASE_URL)("members", () => {
       ok: false,
       reason: "last-parent",
     })
+  })
+
+  it("tells when a parent is the only parent of the family", async () => {
+    const family = await setupFamily()
+    const members = await db.member.findMany({
+      where: { familyId: family.id },
+    })
+    const marc = members.find((m) => m.name === "Marc")!
+    const lina = members.find((m) => m.name === "Lina")!
+
+    expect(await isOnlyParent(marc)).toBe(true)
+    // A child is never "the only parent".
+    expect(await isOnlyParent(lina)).toBe(false)
+
+    await changeRole(family.id, lina.id, "parent")
+    expect(await isOnlyParent(marc)).toBe(false)
   })
 })

@@ -13,6 +13,7 @@ import {
   weekWindow,
 } from "@/lib/calendar-params"
 import { LandingPage, SITE_DESCRIPTION, SITE_TITLE } from "@/features/landing"
+import { isOnlyParent } from "@/lib/members"
 import { listFamilySchedule } from "@/lib/schedule"
 
 type Member = NonNullable<Awaited<ReturnType<typeof getSessionMember>>>
@@ -78,7 +79,7 @@ export default async function Page({
 
   return (
     <>
-      <WeekPromos />
+      <WeekPromos soloParent={await isOnlyParent(member)} />
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-8">
         <Suspense
           key={month ?? monday ?? "current-week"}

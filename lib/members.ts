@@ -27,6 +27,15 @@ export async function listFamilyMembers(
   )
 }
 
+// True when this member is a parent and the family has no other: if they lose their link, nobody can issue a new one.
+export async function isOnlyParent(member: Pick<Member, "familyId" | "role">) {
+  if (member.role !== "parent") return false
+  const parents = await db.member.count({
+    where: { familyId: member.familyId, role: "parent" },
+  })
+  return parents === 1
+}
+
 // Adds a member to a family. Returns the personal link token: it is not stored, only its hash is.
 export async function createMember(familyId: string, input: MemberInput) {
   const token = generateToken()
