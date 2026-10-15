@@ -156,7 +156,7 @@ export function ProposalDemo() {
   return (
     <div
       role="img"
-      aria-label="Exemple de proposition d'un enfant : Mialy propose une sortie au cinéma le samedi 24 octobre. Un parent peut l'accepter ou la refuser."
+      aria-label="Exemple de proposition d'un enfant : Mialy propose une sortie au cinéma le samedi 24 octobre. Un parent peut la valider ou la refuser."
     >
       <Card>
         <p className="text-sm text-muted-foreground">À valider par un parent</p>
@@ -167,7 +167,7 @@ export function ProposalDemo() {
           Proposée par Mialy · Samedi 24 octobre
         </p>
         <div className="flex flex-wrap gap-3">
-          <FakeButton>Accepter</FakeButton>
+          <FakeButton>Valider</FakeButton>
           <FakeButton>Refuser</FakeButton>
         </div>
       </Card>

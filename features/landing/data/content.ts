@@ -51,11 +51,11 @@ export const GAIN_TEXTS = {
   },
   events: {
     title: "Des événements communs sans relancer personne",
-    text: "Pique-nique, réunion, anniversaire : tu choisis la date, Lini te montre qui est déjà pris, puis prévient tout le monde.",
+    text: "Pique-nique, réunion, anniversaire : tu choisis la date, Lini te montre qui est déjà pris, puis prévient les membres qui ont activé les notifications.",
   },
   parents: {
     title: "Pour les parents : toute la semaine en un coup d'œil",
-    text: "Tu vois les journées de chaque membre dans une même vue. Les enfants proposent une activité, et tu l'acceptes ou la refuses.",
+    text: "Tu vois quand chaque membre est libre dans une même vue. Les enfants proposent un événement, et tu le valides ou le refuses.",
   },
   privacy: {
     title: "Garde une activité pour toi",
@@ -119,16 +119,15 @@ export const FAQ = [
   },
   {
     q: "Que faire si quelqu'un perd son lien ?",
-    a: "Un parent le désactive et en crée un nouveau. L'ancien lien ne fonctionne plus.",
+    a: "Un parent le désactive et en crée un nouveau. L'ancien lien ne fonctionne plus. Si c'est le seul parent qui perd son lien, son code de secours, donné à la création de la famille, lui en redonne un.",
   },
   {
     q: "Comment suis-je prévenu d'un événement ?",
-    // TODO(utilisateur) : confirmer le fonctionnement des notifications (notamment sur iPhone), puis retirer la mention entre crochets.
-    a: "Tu reçois une notification quand un événement est créé, puis la veille. [Fonctionnement sur iPhone à confirmer avant la mise en ligne]",
+    a: "Active les notifications depuis la page Semaine : tu es prévenu quand un événement est créé ou modifié, et un rappel arrive avant. Sur iPhone, installe d'abord Lini sur l'écran d'accueil.",
   },
   {
     q: "Ça marche sur téléphone ?",
-    a: "Oui. Lini s'ouvre dans le navigateur de ton téléphone, sans rien installer.",
+    a: "Oui. Lini s'ouvre dans le navigateur de ton téléphone, sans rien installer. Tu peux aussi l'ajouter à ton écran d'accueil.",
   },
   {
     q: "Pourquoi s'appelle-t-il Lini ?",
