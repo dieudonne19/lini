@@ -111,6 +111,10 @@ export const FAQ = [
     q: "Ça marche sur téléphone ?",
     a: "Oui. Lini s'ouvre dans le navigateur de ton téléphone, sans rien installer.",
   },
+  {
+    q: "Pourquoi s'appelle-t-il Lini ?",
+    a: "« Lini » veut dire « quand » en swahili. C'est la question qu'on se pose pour réunir la famille, et celle à laquelle Lini répond.",
+  },
 ]
 
 export const FINAL = {
