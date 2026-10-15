@@ -9,6 +9,7 @@ import { SvgDefs } from "./components/illustrations/svg-defs"
 import { Problem } from "./components/problem"
 import { SmoothScroll } from "./components/smooth-scroll"
 import { Steps } from "./components/steps"
+import { Visibility } from "./components/visibility"
 
 /**
  * Landing page de Lini.
@@ -32,6 +33,7 @@ export function LandingPage() {
         <Hero />
         <Problem />
         <Gains />
+        <Visibility />
         <Steps />
         <Faq />
         <FinalCta />

@@ -18,7 +18,7 @@ export const CTA_MICRO =
 
 export const HERO = {
   title: "Trouve enfin le moment où toute la famille est libre.",
-  lead: "Travail, école, activités : chacun a son emploi du temps, et se voir finit par devenir impossible. Lini réunit les journées de toute la famille et te montre quand tout le monde est libre.",
+  lead: "Travail, école, activités : chacun a son emploi du temps, et se voir finit par devenir impossible. Lini met les semaines de chacun côte à côte et te montre quand tout le monde est libre.",
 }
 
 export const PROBLEM = {
@@ -27,10 +27,10 @@ export const PROBLEM = {
   points: [
     {
       title: "Chacun court de son côté",
-      text: "Chacun a sa semaine bien remplie, et personne ne voit celle des autres.",
+      text: "Chacun a sa semaine bien remplie, et personne ne sait quand les autres sont libres.",
     },
     {
-      title: "Se voir demande une enquête",
+      title: "Trouver un moment est un casse-tête",
       text: "Pour savoir qui est libre samedi, il faut demander à toute la maison, un message après l'autre.",
     },
     {
@@ -39,7 +39,7 @@ export const PROBLEM = {
     },
   ],
   pivot:
-    "Lini sert à ça : voir les journées de chacun et trouver le moment où toute la famille peut se retrouver.",
+    "Lini sert à ça : voir quand chacun est libre, et trouver le moment où toute la famille peut se retrouver.",
 }
 
 export const GAINS_TITLE = "Ce que ta famille y gagne"
@@ -61,6 +61,25 @@ export const GAIN_TEXTS = {
     title: "Garde une activité pour toi",
     text: "Marque-la « Privée » : les autres voient seulement « Occupé », sans le titre ni le détail. Ta famille sait si tu es libre, pas ce que tu fais.",
   },
+}
+
+export const VISIBILITY = {
+  title: "Toi seul décides de ce que les autres voient.",
+  lead: "Lini sert à trouver le moment où toute la famille est libre, pas à savoir où est chacun.",
+  points: [
+    {
+      title: "Tu choisis ce que tu ajoutes",
+      text: "Rien n'est rempli à ta place. Une activité n'apparaît dans Lini que si tu l'as ajoutée.",
+    },
+    {
+      title: "Privé, c'est « Occupé »",
+      text: "Marque une activité comme privée : les autres voient seulement que tu es occupé, sans le titre ni le détail. Même les parents.",
+    },
+    {
+      title: "Les ados aussi y trouvent leur place",
+      text: "Tu vois quand ta famille est libre, et tu peux proposer un événement : un parent le valide ou le refuse.",
+    },
+  ],
 }
 
 export const STEPS_TITLE = "Prêt en trois étapes, sans compte à créer"
