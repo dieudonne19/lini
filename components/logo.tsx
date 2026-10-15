@@ -8,8 +8,8 @@ function Logo() {
       <Image
         src="/lini-logo-A.svg"
         alt="Lini"
-        width={88}
-        height={50}
+        width={64}
+        height={36}
         priority
         unoptimized
       />
